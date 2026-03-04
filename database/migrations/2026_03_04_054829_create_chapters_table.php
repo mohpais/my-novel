@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asset_request_justifications', function (Blueprint $table) {
+        Schema::create('chapters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asset_request_id')->constrained('asset_requests')->cascadeOnDelete();
-            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
-            $table->text('answer');
+            $table->integer('sequence');
+            $table->string('title');
+            $table->string('slug')->nullable();
+            $table->longText('content');
+            $table->date('released_date')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('asset_request_requirement_justifications');
+        Schema::dropIfExists('chapters');
     }
 };

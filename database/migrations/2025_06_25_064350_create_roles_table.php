@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique(); // contoh: superadmin, admin, provider, customer
+            $table->string('code')->unique(); // contoh: superadmin, customer
             $table->string('name')->nullable(); // contoh: "Super Admin"
             $table->text('description')->nullable(); // Deskripsi peran
             $table->boolean('is_active')->default(true); // Status aktif peran

@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('business_units', function (Blueprint $table) {
+        Schema::create('novels', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 150)->unique();
-            $table->text('description')->nullable(); // Deskripsi
+            $table->string('title')->unique();
+            $table->string('slug')->unique()->nullable();
+            $table->text('sinopsis')->nullable();
+            $table->string('cover')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('business_units');
+        Schema::dropIfExists('novels');
     }
 };

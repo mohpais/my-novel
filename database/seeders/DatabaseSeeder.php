@@ -13,10 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            MasterDataSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            WorkflowTemplateSeeder::class,
         ]);
 
     }

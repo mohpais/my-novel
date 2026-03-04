@@ -1,8 +1,8 @@
 
-# 📖 **Fixed Asset Management System**
+# 📖 **My Novel Management System**
 
-✨ **Fixed Asset Management System** adalah sebuah aplikasi web untuk mengelola pengajuan, persetujuan, dan pelaporan belanja modal (capital expenditure) dalam organisasi.  
-Pengguna dapat membuat, memantau, dan mengelola permintaan belanja modal, melacak status persetujuan, serta menghasilkan laporan terkait pengeluaran dan aset secara terpusat melalui admin panel yang terintegrasi.
+✨ **My Novel Management System** adalah sebuahaplikasi web yang dirancang khusus untuk mengelola seluruh ekosistem karya tulis pribadimu.
+Aplikasi ini memungkinkan penulis untuk mengarsipkan novel, mengelola draf per bab, memantau statistik pembaca (view), hingga menghasilkan laporan perkembangan tulisan secara terpusat melalui admin panel yang intuitif.
 
 Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)**.
 
@@ -16,15 +16,15 @@ Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)*
 
 ## 🚀 Fitur
 
-✅ Formulir Pengajuan Capex  
-✅ Approval Workflow  
-✅ Multi-role admin panel (`admin`, `dll`)  
-✅ Budget Checking  
-✅ Realisasi vs Budget  
-✅ Laporan & Analisis  
-✅ Dokumentasi Lampiran
+✅ Manajemen Novel (CRUD): Tambah, edit, dan hapus judul novel serta metadata (genre, sinopsis, cover).  
+✅ Chapter Management: Kelola isi bab dengan editor yang nyaman.  
+✅ Multi-role Admin Panel: Akses kontrol untuk Author, Editor, atau Guest.  
+✅ Statistik & View: Pantau jumlah pembaca dan popularitas setiap karya.  
+✅ Laporan Menulis: Laporan perkembangan jumlah kata dan publikasi per bulan.
+✅ Dokumentasi Karakter/Worldbuilding: Lampiran untuk referensi dunia novel.
+✅ Status Publikasi: Kelola status draf, review, hingga dipublikasikan.
 ✅ Notifikasi & Tracking
-✅ Dibangun sebagai Single Page Application (SPA)
+✅ SPA (Single Page Application): Navigasi cepat tanpa reload halaman.
 
 ---
 
@@ -38,6 +38,42 @@ Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)*
 | Styling     | TailwindCSS          |
 | Auth        | JWT Token            |
 | API         | RESTful JSON API     |
+
+---
+
+## 🛰️ API Documentation
+
+Semua request API harus menyertakan header `Accept: application/json`. Untuk endpoint yang terproteksi, tambahkan header `Authorization: Bearer <your_token>`.
+
+### 🔐 Authentication
+| Method | Endpoint | Keterangan |
+| :--- | :--- | :--- |
+| `POST` | `/api/login` | Mendapatkan JWT Token |
+| `POST` | `/api/logout` | Revoke token saat ini |
+| `GET` | `/api/me` | Mengambil data user yang login |
+
+### 📚 Novels
+| Method | Endpoint | Keterangan |
+| :--- | :--- | :--- |
+| `GET` | `/api/novels` | List semua novel & statistik view |
+| `POST` | `/api/novels` | Membuat novel baru (judul, genre, cover) |
+| `GET` | `/api/novels/{id}` | Detail novel beserta daftar chapter |
+| `PUT` | `/api/novels/{id}` | Update metadata novel |
+| `DELETE` | `/api/novels/{id}` | Menghapus novel dan filenya |
+
+### 📄 Chapters
+| Method | Endpoint | Keterangan |
+| :--- | :--- | :--- |
+| `POST` | `/api/novels/{id}/chapters` | Tambah bab baru ke novel tertentu |
+| `GET` | `/api/chapters/{id}` | Baca isi draf/konten bab |
+| `PUT` | `/api/chapters/{id}` | Update isi tulisan/bab |
+| `PATCH` | `/api/chapters/{id}/publish` | Ubah status bab (Draft -> Published) |
+
+### 📊 Analytics & Reports
+| Method | Endpoint | Keterangan |
+| :--- | :--- | :--- |
+| `GET` | `/api/stats/summary` | Total views, total words, & active novels |
+| `GET` | `/api/reports/monthly` | Laporan produktivitas bulanan |
 
 ---
 
@@ -56,18 +92,23 @@ Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)*
 ### 🔧 Setup Backend
 
 ```bash
+# Clone repository
+git clone https://github.com/nivecreative/my-novel.git
+cd my-novel
+
+# Install dependencies
 composer install
+
+# Environment setup
 copy .env.example .env
 php artisan key:generate
 php artisan jwt:secret
 php artisan storage:link
-
-npm install
 ```
 
 Buat database baru:
 ```sql
-CREATE DATABASE capital_expenditure CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE my_novel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Sesuaikan `.env`:
@@ -99,7 +140,7 @@ Frontend akan berjalan di: [http://localhost:5173](http://localhost:5173)
 ## 🔑 Default Admin
 
 Saat pertama kali migrate & seed:
-- Email: `admin@capitalexpend.local`
+- Email: `admin@mynovel.local`
 - Password: `password`
 
 _Segera ubah password setelah login pertama._
@@ -145,15 +186,15 @@ DB_PASSWORD=
 1️⃣ Fork repo ini  
 2️⃣ Buat branch baru:
 ```bash
-git checkout -b feature/namamu
+git checkout -b feature/FiturBaru
 ```
 3️⃣ Commit perubahan:
 ```bash
-git commit -m "Add feature"
+git commit -m "Menambah fitur X"
 ```
 4️⃣ Push ke branch:
 ```bash
-git push origin feature/namamu
+git push origin feature/FiturBaru
 ```
 5️⃣ Buat Pull Request
 
@@ -167,7 +208,7 @@ MIT License © 2025 [nivecreative](https://github.com/nivecreative)
 
 ## 📬 Kontak
 
-📧 Email: [hello@nivecreative.local](mailto:hello@nivecreative.local)  
+📧 Email: [mohamad.pais30@gmail.com](mailto:mohamad.pais30@gmail.com)  
 🌐 Website: [nivecreative.local](http://localhost)
 
 ---

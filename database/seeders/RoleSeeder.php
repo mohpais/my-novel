@@ -18,42 +18,17 @@ class RoleSeeder extends Seeder
             [
                 'code' => 'superadmin',
                 'name' => 'Super Admin',
-                'description' => 'Memiliki akses penuh ke seluruh sistem dan pengelolaan pengguna.'
+                'description' => 'Memiliki akses penuh ke seluruh sistem dan pengelolaan website.'
             ],
             [
-                'code' => 'managing_director',
-                'name' => 'Managing Director',
-                'description' => 'Bertanggung jawab atas pengambilan keputusan strategis dan pengawasan operasional.'
+                'code' => 'editor',
+                'name' => 'Editor',
+                'description' => 'Bertanggung jawab untuk merapikan tulisanmu sebelum dipublikasikan.'
             ],
             [
-                'code' => 'hod_finance',
-                'name' => 'Head of Finance Department',
-                'description' => 'Memimpin departemen keuangan dan mengelola kebijakan keuangan perusahaan.'
-            ],
-            [
-                'code' => 'finance_controller',
-                'name' => 'Finance Controller',
-                'description' => 'Mengawasi pelaporan keuangan dan memastikan kepatuhan terhadap regulasi.'
-            ],
-            [
-                'code' => 'procurement',
-                'name' => 'Procurement',
-                'description' => 'Mengelola proses pengadaan barang dan jasa untuk kebutuhan perusahaan.'
-            ],
-            [
-                'code' => 'budget_owner',
-                'name' => 'Budget Owner',
-                'description' => 'Bertanggung jawab atas pengelolaan dan pengawasan anggaran tertentu.'
-            ],
-            [
-                'code' => 'requester',
-                'name' => 'Requester',
-                'description' => 'Mengajukan permintaan pembelian atau kebutuhan barang/jasa.'
-            ],
-            [
-                'code' => 'finance_ksea',
-                'name' => 'Finance KSEA',
-                'description' => 'Finance Pusat'
+                'code' => 'reviewer',
+                'name' => 'Reviewer',
+                'description' => 'Pembaca yang telah mendaftar ke website ini.'
             ],
         ];
 

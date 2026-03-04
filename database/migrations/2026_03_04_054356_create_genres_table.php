@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('request_statuses', function (Blueprint $table) {
+        Schema::create('genres', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 50)->unique(); // contoh: pending, approved, rejected
-            $table->string('label', 100); // Human readable name
-            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('request_statuses');
+        Schema::dropIfExists('genres');
     }
 };

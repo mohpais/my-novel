@@ -17,25 +17,6 @@ return new class extends Migration
                 ->constrained('roles')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-
-            $table->foreignId('department_id')
-                ->nullable()
-                ->constrained('departments')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
-            $table->foreignId('position_id')
-                ->nullable()
-                ->constrained('positions')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
-            // Location = province
-            $table->foreignId('location_id')
-                ->nullable()
-                ->constrained('provinces')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
         });
     }
 
