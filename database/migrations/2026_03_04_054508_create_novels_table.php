@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->string('slug')->unique()->nullable();
-            $table->text('sinopsis')->nullable();
-            $table->string('cover')->nullable();
+            $table->text('synopsis')->nullable();
+            $table->string('cover_image')->nullable();
+            $table->enum('status', ['ongoing', 'completed', 'hiatus'])->default('ongoing');
+            $table->unsignedBigInteger('total_views')->default(0);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });

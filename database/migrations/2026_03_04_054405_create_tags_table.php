@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique(); // contoh: "Perawatan Kendaraan Bermotor"
+            $table->text('description')->nullable(); // Deskripsi bidang usaha
+            $table->string('slug')->unique(); // Slug untuk URL yang ramah SEO
+
+            // Relasi dengan tabel users
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null'); // User yang membuat peran ini
+            $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null'); // User yang terakhir mengupdate peran ini
+
+            // Tambahan untuk fitur lainnya
+            $table->boolean('is_active')->default(true); // Status aktif bidang usaha
             $table->timestamps();
         });
     }

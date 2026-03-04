@@ -114,9 +114,6 @@ class AuthController extends Controller
             // load semua relasi yang dibutuhkan
             $user->load([
                 'role:id,name,code',
-                'department:id,name,code',
-                'position:id,name,code',
-                'location:id,name,code',
             ]);
 
             return response()->json([
@@ -125,7 +122,6 @@ class AuthController extends Controller
                     'user' => [
                         'id'                => $user->id,
                         'name'              => $user->name,
-                        'employee_number'   => $user->employee_number,
                         'email'             => $user->email,
                         'picture_url'       => $pictureUrl, 
 
@@ -133,24 +129,6 @@ class AuthController extends Controller
                             'id'   => $user->role->id,
                             'name' => $user->role->name,
                             'code' => $user->role->code,
-                        ] : null,
-
-                        'department' => $user->department ? [
-                            'id'   => $user->department->id,
-                            'name' => $user->department->name,
-                            'code' => $user->department->code,
-                        ] : null,
-
-                        'position'   => $user->position ? [
-                            'id'   => $user->position->id,
-                            'name' => $user->position->name,
-                            'code' => $user->position->code,
-                        ] : null,
-
-                        'location'   => $user->location ? [
-                            'id'   => $user->location->id,
-                            'name' => $user->location->name,
-                            'code' => $user->location->code,
                         ] : null,
                     ],
                     'access_token' => $token,
@@ -197,9 +175,6 @@ class AuthController extends Controller
             // load semua relasi yang dibutuhkan
             $user->load([
                 'role:id,name,code',
-                'department:id,name,code',
-                'position:id,name,code',
-                'location:id,name,code',
             ]);
 
             // return dengan struktur yang rapi
@@ -214,24 +189,6 @@ class AuthController extends Controller
                     'id'   => $user->role->id,
                     'name' => $user->role->name,
                     'code' => $user->role->code,
-                ] : null,
-
-                'department' => $user->department ? [
-                    'id'   => $user->department->id,
-                    'name' => $user->department->name,
-                    'code' => $user->department->code,
-                ] : null,
-
-                'position'   => $user->position ? [
-                    'id'   => $user->position->id,
-                    'name' => $user->position->name,
-                    'code' => $user->position->code,
-                ] : null,
-
-                'location'   => $user->location ? [
-                    'id'   => $user->location->id,
-                    'name' => $user->location->name,
-                    'code' => $user->location->code,
                 ] : null,
             ]);
         } catch (\Throwable $e) {

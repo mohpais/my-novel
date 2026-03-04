@@ -166,9 +166,4 @@
             }
         }
     };
-
-    // onMounted(async () => {
-    //     const token = localStorage.getItem('X-TOKEN')
-    //     apiService.get('/debug-headers')
-    // });
 </script>

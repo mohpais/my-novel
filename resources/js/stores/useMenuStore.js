@@ -59,19 +59,18 @@ export const useMenuStore = defineStore("menu", () => {
                 title: "Menu",
                 items: [
                     {
-                        // icon: 'fa-solid fa-file-lines',
-                        // iconType: 'html',
-                        icon: markRaw(FormsIcon),
-                        name: "Request",
-                        path: "/request/list",
+                        icon: markRaw(GridIcon),
+                        name: "Dashboard",
+                        path: "/dashboard",
                         show: _handleShowMenu(),
                     },
                     {
-                        icon: 'fa-solid fa-briefcase', // The class string
-                        iconType: 'html',
-                        name: "Worklist",
-                        path: "/request/worklist",
-                        show: _handleShowMenu(['superadmin', 'procurement', 'managing_director', 'hod_finance', 'finance_controller', 'budget_owner']),
+                        // icon: 'fa-solid fa-file-lines',
+                        // iconType: 'html',
+                        icon: markRaw(FormsIcon),
+                        name: "Novel List",
+                        path: "/novel/list",
+                        show: _handleShowMenu(),
                     },
                 ],
             },

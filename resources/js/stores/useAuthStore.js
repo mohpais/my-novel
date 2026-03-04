@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('useAuthStore', {
 
                 // 🔑 Ambil redirect dari query string (misal: ?redirect=/dashboard)
                 const redirectPath = router.currentRoute.value.query.redirect
-                let redirectRoute = { name: 'Request' };
+                let redirectRoute = { name: 'Novel' };
                 if (redirectPath) {
                     redirectRoute = redirectPath // langsung pakai path
                 }

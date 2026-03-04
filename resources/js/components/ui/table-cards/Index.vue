@@ -1,8 +1,8 @@
 <!-- Table Card Component -->
 <template>
     <div class="h-[calc(100vh-169px)] flex flex-col rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] shadow-theme-md">
-        <div class="flex flex-col justify-between gap-5 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center dark:border-gray-800">
-            <div>
+        <div v-if="withHeader" class="flex flex-col justify-between gap-5 border-b border-gray-200 px-5 py-4 sm:flex-row sm:items-center dark:border-gray-800">
+            <div v-if="title || description" class="flex flex-col gap-2">
                 <h3 v-if="!title" class="w-48 h-6 bg-gray-200 rounded animate-tw-pulse dark:bg-gray-700"></h3>
                 <h3 v-else class="text-lg font-semibold text-gray-800 dark:text-white/90">{{ title }}</h3>
                 

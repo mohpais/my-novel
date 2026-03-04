@@ -1,7 +1,7 @@
 
 # 📖 **My Novel Management System**
 
-✨ **My Novel Management System** adalah sebuahaplikasi web yang dirancang khusus untuk mengelola seluruh ekosistem karya tulis pribadimu.
+✨ **My Novel Management System** adalah sebuah aplikasi web yang dirancang khusus untuk mengelola seluruh ekosistem karya tulis pribadimu.
 Aplikasi ini memungkinkan penulis untuk mengarsipkan novel, mengelola draf per bab, memantau statistik pembaca (view), hingga menghasilkan laporan perkembangan tulisan secara terpusat melalui admin panel yang intuitif.
 
 Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)**.
@@ -10,7 +10,7 @@ Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)*
 
 ## 🔗 Demo
 📘 _(Opsional, jika sudah deploy)_  
-> [Demo Online](https://capitalexped.local)
+> [Demo Online](https://mynovel.local)
 
 ---
 
@@ -93,7 +93,7 @@ Semua request API harus menyertakan header `Accept: application/json`. Untuk end
 
 ```bash
 # Clone repository
-git clone https://github.com/nivecreative/my-novel.git
+git clone https://github.com/mohpais/my-novel.git
 cd my-novel
 
 # Install dependencies
@@ -108,12 +108,12 @@ php artisan storage:link
 
 Buat database baru:
 ```sql
-CREATE DATABASE my_novel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE my_novel_management_system CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Sesuaikan `.env`:
 ```
-DB_DATABASE=capital-expenditure
+DB_DATABASE=my_novel_management_system
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -172,9 +172,9 @@ throne-of-fractured-fates/
 
 Pastikan `.env` di-root sudah disesuaikan:
 ```
-APP_NAME="Throne of Fractured Fates"
+APP_NAME="My Novel Management System"
 APP_URL=http://localhost
-DB_DATABASE=fractured_fates
+DB_DATABASE=my_novel_management_system
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -202,16 +202,16 @@ git push origin feature/FiturBaru
 
 ## 📝 Lisensi
 
-MIT License © 2025 [nivecreative](https://github.com/nivecreative)
+MIT License © 2025 [fzdev](https://github.com/mohpais)
 
 ---
 
 ## 📬 Kontak
 
 📧 Email: [mohamad.pais30@gmail.com](mailto:mohamad.pais30@gmail.com)  
-🌐 Website: [nivecreative.local](http://localhost)
+🌐 Website: [mynovel.local](http://localhost)
 
 ---
 
-## 🌟 Terima kasih sudah menggunakan & mendukung **Throne of Fractured Fates**!  
+## 🌟 Terima kasih sudah menggunakan & mendukung **My Novel Management System**!  
 _Keep writing. Your world is waiting._ ✨

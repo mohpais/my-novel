@@ -9,8 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Role;
-use App\Models\Bookmark;
-use App\Models\Favorite;
 
 /**
  * Class User
@@ -42,16 +40,10 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'employee_number',
         'name',
         'email',
         'password',
         'role_id',
-        'department_id',
-        'position_id',
-        'location_id',
-        'cost_center_id',
-        'business_unit_id',
         'picture',
         'status',
     ];
@@ -88,38 +80,8 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function costCenter()
-    {
-        return $this->belongsTo(CostCenter::class);
-    }
-
-    public function businessUnit()
-    {
-        return $this->belongsTo(BusinessUnit::class);
-    }
-
-    public function approvals()
-    {
-        return $this->hasMany(AssetRequestWorkflow::class, 'user_id');
-    }
-
     public function role()
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
-
-    public function position()
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    public function location()
-    {
-        return $this->belongsTo(Province::class, 'location_id');
     }
 }

@@ -8,13 +8,9 @@
                     <router-view></router-view>
                     <div 
                         class="relative items-center hidden w-full h-full lg:w-1/2 lg:grid"
-                        :style="{ backgroundImage: `url(${KoneBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
+                        :style="{ backgroundImage: `url(${Background})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
                     >
                         <div class="absolute inset-0 bg-gray-900/50 dark:bg-gray-900/70"></div>
-                        <!-- <div class="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent dark:from-gray-900/70"></div>
-                        <div class="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-transparent dark:to-gray-900/70"></div>
-                        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/50 to-transparent dark:from-gray-900/70"></div>
-                        <div class="absolute inset-0 bg-gradient-to-l from-gray-900/50 to-transparent dark:to-gray-900/70"></div> -->
                         <div class="flex items-center justify-center z-1">
                             <div>
                                 <div class="absolute right-0 top-0 -z-1 w-full max-w-[250px] xl:max-w-[450px]">
@@ -44,4 +40,5 @@
     import AuthLogo from "@/assets/logos/logo-auth.svg";
     import Grid1 from "@/assets/images/shape/grid-01.svg";
     import KoneBackground from "@/assets/backgrounds/Kone Background.jpg";
+    import Background from "@/assets/backgrounds/background-1.avif";
 </script>

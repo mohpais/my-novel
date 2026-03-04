@@ -17,20 +17,6 @@ let columnDefs = [
         valueGetter: (params) => params.data.id,
     },
     {
-        field: "name",
-        headerName: computed(() => t("App.employeeName")),
-        flex: 1,
-        minWidth: 220,
-        valueGetter: (params) => params.data.name,
-    },
-    {
-        field: "employee_number",
-        headerName: computed(() => t("App.employeeNumber")),
-        flex: 1,
-        minWidth: 220,
-        valueGetter: (params) => params.data.employee_number ? params.data.employee_number : "-",
-    },
-    {
         field: "email",
         headerName: computed(() => t("Email")),
         flex: 1,

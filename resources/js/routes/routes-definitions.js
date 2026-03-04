@@ -1,9 +1,7 @@
 import authRoutes from '../modules/auth/routes';
 import dashboardRoutes from '../modules/dashboard/routes';
 import userRoutes from '../modules/user/routes';
-import financeRoutes from '../modules/finance/routes';
-import assetRoutes from '../modules/asset/routes';
-import requestRoutes from '../modules/request/routes';
+import novelRoutes from '../modules/novel/routes';
 
 export default [
     {
@@ -19,7 +17,5 @@ export default [
     ...authRoutes,
     ...dashboardRoutes,
     ...userRoutes,
-    ...financeRoutes,
-    ...assetRoutes,
-    ...requestRoutes,
+    ...novelRoutes,
 ];
