@@ -8,7 +8,7 @@ import {
     UserCircleIcon,
     DocsIcon,
     FormsIcon,
-    DollarCircleIcon,
+    BarChartIcon,
 } from "@/components/icons";
 
 export const useMenuStore = defineStore("menu", () => {
@@ -84,9 +84,9 @@ export const useMenuStore = defineStore("menu", () => {
                         show: _handleShowMenu(['superadmin']),
                     },
                     {
-                        icon: markRaw(DollarCircleIcon),
-                        name: t("App.Finance"),
-                        path: "/finance",
+                        icon: markRaw(BarChartIcon),
+                        name: "Management Data",
+                        path: "/management/data",
                         show: _handleShowMenu(['superadmin', 'admin']),
                     },
                 ],

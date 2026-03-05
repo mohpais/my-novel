@@ -8,11 +8,14 @@ import { useRouter } from "vue-router";
 export const useNovelStore = defineStore('novel', () => {
     const data = reactive({
         novels: [],
+        genres: [],
+        tags: [],
     });
 
     const form = reactive({
         title: "",
         synopsis: "",
+        cover: null,
         genre_ids: [],
         tag_ids: []
     });

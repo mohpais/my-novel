@@ -12,7 +12,7 @@ export default [
     },
     {
         path: '/',
-        redirect: '/request/list',
+        redirect: '/dashboard',
     },
     ...authRoutes,
     ...dashboardRoutes,

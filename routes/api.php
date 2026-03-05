@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AssetController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\GenreController;
 use App\Http\Controllers\API\MasterController;
 use App\Http\Controllers\API\NovelController;
 use App\Http\Controllers\API\UserController;
@@ -33,6 +34,17 @@ Route::prefix('auth')->group(function () {
 Route::prefix('master')->group(function () {
     Route::middleware(['jwt.auth', 'role:admin,superadmin'])->group(function () {
         Route::get('roles', [MasterController::class, 'getRoles']);
+        Route::get('genres', [MasterController::class, 'getGenres']);
+        Route::get('tags', [MasterController::class, 'getTags']);
+    });
+});
+
+Route::prefix('genre')->group(function () {
+    Route::middleware(['jwt.auth', 'role:admin,superadmin'])->group(function () {
+        Route::get('list/{page}/{limit}', [GenreController::class, 'index']);
+        Route::get('options', [GenreController::class, 'options']);
+        Route::get('{slug}', [GenreController::class, 'show']);
+        Route::post('create', [GenreController::class, 'store']);
     });
 });
 

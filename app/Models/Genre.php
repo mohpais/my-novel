@@ -9,7 +9,17 @@ use Illuminate\Support\Str;
 
 class Genre extends Model
 {
-    protected $fillable = ['name', 'description', 'slug', 'is_active', 'created_by', 'updated_by'];
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'slug',
+        'is_active',
+        'created_by',
+        'updated_by'
+    ];
+
     protected $casts = [
         'is_active' => 'boolean',
     ];
@@ -17,8 +27,6 @@ class Genre extends Model
     protected $attributes = [
         'is_active' => true,
     ];
-    
-    protected $appends = ['slug'];
 
     public function novels(): HasMany
     {
@@ -27,9 +35,9 @@ class Genre extends Model
 
     protected static function booted(): void
     {
-        static::saving(function ($role) {
-            if (empty($role->slug) || $role->isDirty('name')) {
-                $role->slug = Str::slug($role->name);
+        static::saving(function ($genre) {
+            if (empty($genre->slug) || $genre->isDirty('name')) {
+                $genre->slug = Str::slug($genre->name);
             }
         });
     }

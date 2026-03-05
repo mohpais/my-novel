@@ -19,11 +19,11 @@ const novelRoutes = [
             //     path: 'detail/:slug',
             //     component: () => import('@/modules/novel/pages/DetailPage.vue'),
             // },
-            // {
-            //     name: 'NovelCreatePage',
-            //     path: 'create',
-            //     component: () => import('@/modules/novel/pages/CreatePage.vue'),
-            // }
+            {
+                name: 'NovelCreatePage',
+                path: 'create',
+                component: () => import('@/modules/novel/pages/CreatePage.vue'),
+            }
         ]
     }
 ];

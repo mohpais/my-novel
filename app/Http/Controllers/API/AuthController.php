@@ -81,23 +81,22 @@ class AuthController extends Controller
                 ], 422);
             }
 
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Invalid credentials'
-                ], 401);
-            }
-
             // set TTL lebih panjang kalau keepLoggedIn
             if ($keepLoggedIn) {
                 auth()->factory()->setTTL(60 * 24 * 7); // 7 hari
             }
 
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid credentials'
+                ], 401);
+            }
 
             // Get the authenticated user.
-            $user = Auth::user();
+            $user = auth()->user();
 
-            $defaultPictureUrl = asset('images/default-avatar.png'); 
+            $defaultPictureUrl = asset('images/defaults/no-avatar.png'); 
 
             // 1. Dapatkan URL gambar pengguna
             $picturePath = $user->picture;
@@ -158,7 +157,7 @@ class AuthController extends Controller
                 ], 404);
             }
 
-            $defaultPictureUrl = asset('images/default-avatar.png'); 
+            $defaultPictureUrl = asset('images/defaults/no-avatar.png');
 
             // 1. Dapatkan URL gambar pengguna
             $picturePath = $user->picture;

@@ -2,6 +2,7 @@ import Breadcrumb from "./Breadcrumb.vue";
 import Button from "./Button.vue";
 import Card from "./Card.vue";
 import Checkbox from "./Checkbox.vue";
+import CoverUploader from "./CoverUploader.vue";
 import DataTable from "./AgGridTable/DataTable.vue";
 import Datepicker from "./Datepicker.vue";
 // import Datepicker from "./AgGridTable/DataTable.vue";
@@ -24,6 +25,7 @@ export default {
     Button,
     Card,
     Checkbox,
+    CoverUploader,
     DataTable,
     Datepicker,
     Dropdown,
