@@ -1,0 +1,20 @@
+# Feature / Fix:
+- Optimasi Tampilan Teks SectionDescription pada Website
+- Meningkatkan penanganan input Kode untuk peserta pada validasi kuesioner.
+
+# Issue:
+- Saat ini Section Description tidak rapih saat dibaca
+- Pengguna terkadang menyalin dan menempel kode dengan spasi (misalnya, " ABC123 "). Spasi tersebut dikirim ke backend sehingga menyebabkan ketidaksesuaian validasi.
+
+# Tujuan: 
+- Memperbaiki tata letak teks agar lebih responsif dan mencegah elemen desain rusak (layout breaking).
+Properti CSS yang Ditambahkan:
+style="white-space: pre-wrap; word-break: break-word;"
+- Menghilangkan kemungkinan penulisan spasi di awal atau diakhir pada saat input atau paste
+
+# Fungsi Utama:
+- Preservasi Format (pre-wrap): Menampilkan teks sesuai dengan format asli dari pengguna (menjaga spasi dan baris baru/enter) tanpa memotong teks secara horizontal. Pencegahan Overflow (break-word): Memastikan kata yang sangat panjang (seperti link URL atau kode acak) akan diputus secara otomatis jika melebihi lebar kontainer, sehingga tidak "meluber" keluar dari bingkai.
+
+# Konteks Penggunaan:
+- Untuk menampilkan konten dinamis dari instruksi section.
+- Mencegah kesalahan validasi yang disebabkan oleh spasi yang tidak disengaja.

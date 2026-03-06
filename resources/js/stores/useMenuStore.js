@@ -30,32 +30,7 @@ export const useMenuStore = defineStore("menu", () => {
     // PENTING: Ubah allMenus menjadi computed property
     const filteredMenus = computed(() => {
         const rawMenus = [
-            // {
-            //     title: "Create Request",
-            //     type: "button",
-            //     items: [],
-            //     path: "/request/create",
-            //     show: true,
-            // },
-            // {
-            //     title: "Menu",
-            //     items: [
-            //         {
-            //             icon: markRaw(GridIcon),
-            //             name: "Dashboard",
-            //             path: "/dashboard",
-            //             show: _handleShowMenu(),
-            //         },
-            //         {
-            //             icon: markRaw(BuildingFillDown),
-            //             name: "Assets",
-            //             path: "/asset/list",
-            //             show: _handleShowMenu(),
-            //         },
-            //     ],
-            // },
             {
-                // title: t("App.Workspace"),
                 title: "Menu",
                 items: [
                     {
@@ -65,8 +40,6 @@ export const useMenuStore = defineStore("menu", () => {
                         show: _handleShowMenu(),
                     },
                     {
-                        // icon: 'fa-solid fa-file-lines',
-                        // iconType: 'html',
                         icon: markRaw(FormsIcon),
                         name: "Novel List",
                         path: "/novel/list",
@@ -88,6 +61,42 @@ export const useMenuStore = defineStore("menu", () => {
                         name: "Management Data",
                         path: "/management/data",
                         show: _handleShowMenu(['superadmin', 'admin']),
+                    },
+                ],
+                show: _handleShowMenu(['superadmin', 'admin']),
+            },
+            {
+                title: "AI Assistant",
+                items: [
+                    {
+                        icon: markRaw(UserCircleIcon),
+                        name: "Improve Narrative",
+                        path: "/user",
+                        show: _handleShowMenu(['superadmin']),
+                    },
+                    {
+                        icon: markRaw(UserCircleIcon),
+                        name: "Generate Dialogue",
+                        path: "/user",
+                        show: _handleShowMenu(['superadmin']),
+                    },
+                    {
+                        icon: markRaw(UserCircleIcon),
+                        name: "Character Helper",
+                        path: "/user",
+                        show: _handleShowMenu(['superadmin']),
+                    },
+                    {
+                        icon: markRaw(UserCircleIcon),
+                        name: "Story Planner",
+                        path: "/user",
+                        show: _handleShowMenu(['superadmin']),
+                    },
+                    {
+                        icon: markRaw(UserCircleIcon),
+                        name: "Worldbuilding Helper",
+                        path: "/user",
+                        show: _handleShowMenu(['superadmin']),
                     },
                 ],
                 show: _handleShowMenu(['superadmin', 'admin']),

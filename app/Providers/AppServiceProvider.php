@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \App\Models\Character::observe(\App\Observers\CharacterObserver::class);
+        \App\Models\WorldBuilding::observe(\App\Observers\WorldBuildingObserver::class);
+        \App\Models\CharacterPower::observe(\App\Observers\CharacterPowerObserver::class); // Tambahkan ini
     }
 }

@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('novel_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
-
-            $table->timestamps();
         });
     }
 

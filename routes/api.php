@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AiAssistantController;
 use App\Http\Controllers\API\AssetController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GenreController;
@@ -19,6 +20,11 @@ Route::get('/debug-headers', function (Request $request) {
         'bearer_token' => $request->bearerToken(),
         'headers' => $request->headers->all(),
     ]);
+});
+
+Route::get('/test-queue', function() {
+    \App\Jobs\ProcessAiEmbedding::dispatch(1, 'test', 1, 'Cek koneksi queue');
+    return "Job berhasil dikirim!";
 });
 
 Route::prefix('auth')->group(function () {
@@ -57,6 +63,10 @@ Route::middleware(['jwt.auth', 'role:admin,superadmin'])->prefix('user')->group(
     Route::post('list/{page}/{per_page}', [UserController::class, 'list']);
     Route::post('create', [UserController::class, 'create']);
     Route::delete('{id}', [UserController::class, 'destroy']);
+});
+
+Route::middleware(['jwt.auth', 'role:admin,superadmin'])->prefix('ai')->group(function () {
+    Route::post('ask', [AiAssistantController::class, 'ask']);
 });
 
 Route::any('{path}', function() {

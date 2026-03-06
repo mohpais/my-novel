@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('novel_genre', function (Blueprint $table) {
+        Schema::create('ai_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('novel_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('ai_conversation_id')->constrained()->cascadeOnDelete();
+            $table->enum('role', ['user','assistant','system']);
+            $table->longText('content');
+            $table->timestamps();
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('novel_genre');
+        Schema::dropIfExists('ai_messages');
     }
 };

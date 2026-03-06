@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->longText('content');
             $table->date('released_date')->nullable();
+            $table->json('embedding')->nullable();
             $table->timestamps();
             
             $table->unique(['novel_id', 'number']);

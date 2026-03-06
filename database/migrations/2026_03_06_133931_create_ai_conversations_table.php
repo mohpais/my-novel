@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('novel_genre', function (Blueprint $table) {
+        Schema::create('ai_conversations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('novel_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('novel_id')->nullable();
+            $table->string('session_id')->nullable();
+            $table->timestamps();
+            
+            // Indexes for AI search
+            $table->index(['novel_id']);
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('novel_genre');
+        Schema::dropIfExists('ai_conversations');
     }
 };
