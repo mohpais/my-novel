@@ -1,22 +1,22 @@
 import apiService from '@/utils/apiService';
 
-const novelService = {
-    getList: async (page, limit, payload) => {
+const chapterService = {
+    getList: async (novelSlug, payload) => {
         let response = await apiService.post(
-            `/novel/list/${page}/${limit}`,
+            `/novel/${novelSlug}/chapters`,
             payload
         );
 
         return response.data;
     },
-    get: async (slug) => {
-        let response = await apiService.get(`/novel/${slug}`);
+    get: async (novelSlug, slug) => {
+        let response = await apiService.get(`/novel/${novelSlug}/chapter/${slug}`);
         return response.data;
     },
     create: async (payload) => {
-        let response = await apiService.post(`/novel/create`, payload);
+        let response = await apiService.post(`/novel/chapter/store`, payload);
         return response.data;
     },
 }
 
-export default novelService;
+export default chapterService;

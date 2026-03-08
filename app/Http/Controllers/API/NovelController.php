@@ -99,7 +99,7 @@ class NovelController extends Controller
      */
     public function show($slug): JsonResponse
     {
-        $novel = Novel::with(['genres', 'tags', 'chapters'])->where('slug', $slug)->first();
+        $novel = Novel::with(['genres', 'tags'])->where('slug', $slug)->first();
 
         if (!$novel) {
             return response()->json(['success' => false, 'message' => 'Novel tidak ditemukan'], 404);

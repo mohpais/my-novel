@@ -25,11 +25,31 @@ class Tag extends Model
         return $this->hasMany(Novel::class);
     }
 
+    /**
+     * Get the slug attribute.
+     *
+     * @return string
+     */
+    public function getSlugAttribute()
+    {
+        return $this->attributes['slug'] ?? Str::slug($this->title);
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected static function booted(): void
     {
-        static::saving(function ($role) {
-            if (empty($role->slug) || $role->isDirty('name')) {
-                $role->slug = Str::slug($role->name);
+        static::saving(function ($tag) {
+            if (empty($tag->slug) || $tag->isDirty('name')) {
+                $tag->slug = Str::slug($tag->name);
             }
         });
     }

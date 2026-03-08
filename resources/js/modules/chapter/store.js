@@ -1,13 +1,12 @@
 import { reactive } from "vue";
 import service from './service';
 import { defineStore } from 'pinia';
-import { queueToastAfterLayout, flushToastQueue } from '@/composables/useToastAfterLayout'
 import listNovelsColumnDefs from "./useColumnDefsTable";
 import { useRouter } from "vue-router";
 
-export const useNovelStore = defineStore('novel', () => {
+export const useChapterStore = defineStore('chapter', () => {
     const data = reactive({
-        novels: [],
+        chapters: [],
     });
 
     const form = reactive({

@@ -16,7 +16,7 @@
                     class="h-full"
                     :rowData="dataTable.data"
                     :columnDefs="dataTable.column"
-                    :loading="isLoading.fetchNovel"
+                    :loading="isLoading.fetchListNovels"
                     :isServerSide="true"
                     v-model:paginationConfig="dataTable.paginationConfig"
                     @onSortChanged="handlePageChanged"

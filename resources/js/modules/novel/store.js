@@ -52,8 +52,9 @@ export const useNovelStore = defineStore('novel', () => {
         isLoading.fetchListNovels = true;
 
         const result = await service.getList(
-            dataTable.paginationConfig.currentPage, dataTable.paginationConfig.pageSize,
             {
+                page: dataTable.paginationConfig.currentPage,
+                limit: dataTable.paginationConfig.pageSize,
                 filterParams: dataTable.filterParams,
                 sortParams: dataTable.sortParams,
             }
@@ -67,12 +68,12 @@ export const useNovelStore = defineStore('novel', () => {
             dataTable.paginationConfig.totalPages = pagination.total_pages;
             dataTable.paginationConfig.totalRecord = pagination.total_records;
         }
-        isLoading.fetchListRequests = false;
+        isLoading.fetchListNovels = false;
     }
 
-    async function fetchNovel(novel_id) {
+    async function fetchNovel(novel_slug) {
         isLoading.fetchNovel = true;
-        const result = await service.get(novel_id);
+        const result = await service.get(novel_slug);
 
         let { success, data: novels } = result;
 

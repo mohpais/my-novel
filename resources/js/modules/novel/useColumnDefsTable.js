@@ -5,6 +5,10 @@ import { useTranslation } from "@/composables/useTranslation";
 const { i18n } = useTranslation();
 const { t } = i18n.global;
 
+const CellStatus = defineAsyncComponent(() =>
+    import("./components/cell-status/Index.vue")
+);
+
 const CellAction = defineAsyncComponent(() =>
     import("./components/cell-actions/Index.vue")
 );
@@ -18,11 +22,25 @@ const listNovelsColumnDefs = [
         valueGetter: (params) => params.data.title,
     },
     {
-        field: "sinopsis",
+        field: "synopsis",
         headerName: "Synopsis",
         flex: 1,
         minWidth: 150,
-        valueGetter: (params) => params.data.sinopsis,
+        valueGetter: (params) => params.data.synopsis,
+    },
+    {
+        field: "total_views",
+        headerName: "Total Views",
+        flex: 1,
+        minWidth: 120,
+        valueGetter: (params) => `${params.data.total_views} views`,
+    },
+    {
+        field: "status",
+        headerName: "Status",
+        flex: 1,
+        cellRenderer: CellStatus,
+        width: 120
     },
     {
         field: "created_at",

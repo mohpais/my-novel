@@ -33,6 +33,26 @@ class Genre extends Model
         return $this->hasMany(Novel::class);
     }
 
+    /**
+     * Get the slug attribute.
+     *
+     * @return string
+     */
+    public function getSlugAttribute()
+    {
+        return $this->attributes['slug'] ?? Str::slug($this->title);
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected static function booted(): void
     {
         static::saving(function ($genre) {

@@ -9,20 +9,20 @@ const CellAction = defineAsyncComponent(() =>
     import("./components/cell-actions/Index.vue")
 );
 
-const listNovelsColumnDefs = [
+const listChaptersColumnDefs = [
+    {
+        field: "number",
+        headerName: "Chapter Number",
+        flex: 1 / 3,
+        minWidth: 150,
+        valueGetter: (params) => params.data.number,
+    },
     {
         field: "title",
         headerName: "Title",
         flex: 1 / 3,
         minWidth: 150,
         valueGetter: (params) => params.data.title,
-    },
-    {
-        field: "sinopsis",
-        headerName: "Synopsis",
-        flex: 1,
-        minWidth: 150,
-        valueGetter: (params) => params.data.sinopsis,
     },
     {
         field: "created_at",
@@ -43,4 +43,4 @@ const listNovelsColumnDefs = [
     },
 ];
 
-export default listNovelsColumnDefs;
+export default listChaptersColumnDefs;

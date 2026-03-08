@@ -40,11 +40,11 @@ class Novel extends Model
      *
      * @var array
      */
-    protected $hidden = [
-        'published_at',
-        'created_at',
-        'updated_at',
-    ];
+    // protected $hidden = [
+    //     'published_at',
+    //     'created_at',
+    //     'updated_at',
+    // ];
 
     /**
      * The attributes that should be appended to the model's array form.

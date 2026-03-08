@@ -14,11 +14,11 @@ const novelRoutes = [
                 path: 'list',
                 component: () => import('@/modules/novel/pages/ListPage.vue'),
             },
-            // {
-            //     name: 'NovelDetailPage',
-            //     path: 'detail/:slug',
-            //     component: () => import('@/modules/novel/pages/DetailPage.vue'),
-            // },
+            {
+                name: 'NovelDetailPage',
+                path: 'detail/:slug',
+                component: () => import('@/modules/novel/pages/DetailPage.vue'),
+            },
             {
                 name: 'NovelCreatePage',
                 path: 'create',

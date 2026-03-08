@@ -1,31 +1,31 @@
-const novelRoutes = [
+const chapterRoutes = [
     {
-        path: '/novel',
-        name: 'Novel',
-        redirect: { name: 'NovelListPage' },
+        path: '/chapter',
+        name: 'Chapter',
+        redirect: { name: 'ChapterListPage' },
         meta: {
             layout: 'AdminLayout',
             requiresAuth: true,
-            title: 'Novel',
+            title: 'Chapter',
         },
         children: [
             {
-                name: 'NovelListPage',
+                name: 'ChapterListPage',
                 path: 'list',
-                component: () => import('@/modules/novel/pages/ListPage.vue'),
+                component: () => import('@/modules/chapter/pages/ListPage.vue'),
             },
             // {
-            //     name: 'NovelDetailPage',
+            //     name: 'ChapterDetailPage',
             //     path: 'detail/:slug',
-            //     component: () => import('@/modules/novel/pages/DetailPage.vue'),
+            //     component: () => import('@/modules/chapter/pages/DetailPage.vue'),
             // },
             {
-                name: 'NovelCreatePage',
+                name: 'ChapterCreatePage',
                 path: 'create',
-                component: () => import('@/modules/novel/pages/CreatePage.vue'),
+                component: () => import('@/modules/chapter/pages/CreatePage.vue'),
             }
         ]
     }
 ];
 
-export default novelRoutes;
+export default chapterRoutes;
