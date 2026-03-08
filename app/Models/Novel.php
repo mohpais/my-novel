@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Novel extends Model
 {
@@ -50,7 +51,18 @@ class Novel extends Model
      *
      * @var array
      */
-    protected $appends = ['slug'];
+    protected $appends = ['slug', 'cover_url'];
+
+    /**
+     * Accessor untuk mendapatkan URL lengkap gambar.
+     */
+    public function getCoverUrlAttribute()
+    {
+        if ($this->cover_image) {
+            return asset('storage/' . $this->cover_image);
+        }
+        return asset('images/default-cover.jpg'); // Path jika gambar kosong
+    }
 
     public function genres()
     {
@@ -74,7 +86,7 @@ class Novel extends Model
      */
     public function getSlugAttribute()
     {
-        return $this->attributes['slug'] ?? str_slug($this->title);
+        return $this->attributes['slug'] ?? Str::slug($this->title);
     }
 
     /**
@@ -91,7 +103,7 @@ class Novel extends Model
     {
         static::creating(function ($novel) {
             if (empty($novel->slug)) {
-                $novel->slug = str_slug($novel->title);
+                $novel->slug = Str::slug($novel->title);
             }
         });
     }

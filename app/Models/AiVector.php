@@ -25,9 +25,8 @@ class AiVector extends Model
      */
     protected $fillable = [
         'novel_id',
-        'source_category',
-        'source_id',
-        'chunk_index',
+        'vectorable_id',
+        'vectorable_type',
         'content',
         'embedding',
     ];
@@ -38,17 +37,14 @@ class AiVector extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'chunk_index' => 'integer',
         'embedding' => 'array',
     ];
 
     /**
-     * Mendapatkan model pemilik vektor ini secara polimorfik.
-     * Menggunakan 'source_category' sebagai tipe dan 'source_id' sebagai ID.
+     * Mendefinisikan relasi polymorphic ke model yang dapat memiliki vektor AI.
      */
-    public function source(): MorphTo
-    {
-        return $this->morphTo(__FUNCTION__, 'source_category', 'source_id');
+    public function vectorable() {
+        return $this->morphTo();
     }
 
     /**

@@ -10,18 +10,18 @@ class CharacterObserver
     public function saved(Character $character)
     {
         // Gabungkan data penting karakter untuk dijadikan konteks
-        $content = "Character Name: {$character->name}. " .
+        $nickName = $character->title ?? $character->epithet;
+        
+        $content = "Character Full Name: {$character->fullname}. " .
+                   "Nick Name: {$nickName}. " .
                    "Role: {$character->role}. " .
-                   "Bio: {$character->description}. " .
-                   "Personality: {$character->personality}";
+                   "Appearance: {$character->appearance}. " .
+                   "Personality: {$character->personality}. " .
+                   "Motivation: {$character->motivation}" .
+                   "Backstory: {$character->backstory}";
 
         // Kirim ke antrean background
-        ProcessAiEmbedding::dispatch(
-            $character->novel_id,
-            'character',
-            $character->id,
-            $content
-        );
+        ProcessAiEmbedding::dispatch($character, $content, 'character');
     }
 
     public function deleted(Character $character) {

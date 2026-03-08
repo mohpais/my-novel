@@ -7,7 +7,6 @@ use App\Models\Genre;
 use App\Models\Tag;
 use App\Models\Character;
 use App\Models\CharacterPower;
-use App\Models\WorldBuilding;
 use Illuminate\Database\Seeder;
 
 class NovelDatabaseSeeder extends Seeder
@@ -40,95 +39,69 @@ Throne of Fractured Fates: Kisah tentang kebencian, kekuasaan, dan takdir yang d
         $novel->genres()->attach($genre->id);
         $novel->tags()->attach([$tagMagic->id, $tagKingdom->id]);
 
-        // 3. World Building (Lore)
-        $loreData = [
-            [
-                'title' => 'Infinite Prison (Segel Dimensi)',
-                'category' => 'Location',
-                'content' => 'content' => 'Sebuah penjara dimensi tanpa ujung tempat Kaelen dikurung selama ribuan tahun oleh Sang Dewi. Segel ini akhirnya runtuh karena anomali sejarah yang menulis ulang realitas.',
-            ],
-            [
-                'title' => 'Aetherial Trait',
-                'category' => 'Power System',
-                'content' => 'Aetherial Trait adalah kekuatan absolut berbasis resonansi jiwa. Membangkitkannya membawa risiko kehancuran diri jika tidak dikelola dengan benar.'
-            ],
-            [
-                'title' => 'Sang Malapetaka',
-                'category' => 'History',
-                'content' => 'Peristiwa di mana Kaelen menghancurkan seluruh menghancurkan dunia sebelum akhirnya disegel.'
-            ],
-            [
-                'title' => 'Kerajaan Lurn',
-                'category' => 'Kingdom',
-                'content' => 'Kerajaan yang sedang dilanda perang saudara antara Putri Aria dan kakaknya, Pangeran Julian. Kerajaan ini memiliki sejarah panjang dan berfokous ke arah ksatria, tetapi kini terancam oleh konflik internal dan ancaman eksternal.'
-            ]
-        ];
+        // // 3. World Building (Lore)
+        // $loreData = [
+        //     [
+        //         'title' => 'Infinite Prison (Segel Dimensi)',
+        //         'category' => 'Location',
+        //         'content' => 'Sebuah penjara dimensi tanpa ujung tempat Kaelen dikurung selama ribuan tahun oleh Sang Dewi. Segel ini akhirnya runtuh karena anomali sejarah yang menulis ulang realitas.',
+        //     ],
+        //     [
+        //         'title' => 'Aetherial Trait',
+        //         'category' => 'Power System',
+        //         'content' => 'Aetherial Trait adalah kekuatan absolut berbasis resonansi jiwa. Membangkitkannya membawa risiko kehancuran diri jika tidak dikelola dengan benar.'
+        //     ],
+        //     [
+        //         'title' => 'Kerajaan Lurn',
+        //         'category' => 'Kingdom',
+        //         'content' => 'Kerajaan yang sedang dilanda perang saudara antara Putri Aria dan kakaknya, Pangeran Julian. Kerajaan ini memiliki sejarah panjang dan berfokous ke arah ksatria, tetapi kini terancam oleh konflik internal dan ancaman eksternal.'
+        //     ]
+        // ];
 
-        foreach ($loreData as $lore) {
-            WorldBuilding::create(array_merge($lore, ['novel_id' => $novel->id]));
-        }
+        // foreach ($loreData as $lore) {
+        //     WorldBuilding::create(array_merge($lore, ['novel_id' => $novel->id]));
+        // }
 
         // 4. Characters
-        $seren = Character::create([
-            [
-                'novel_id' => $novel->id,
-                'name' => 'Kaelen',
-                'role' => 'Protagonist',
-                'gender' => 'male',
-                'appearance' => 'Rambut hitam panjang berantakan, tatapan tajan dan dingin dengan mata emas (sebelumnya ungu pekat), tubuh terlatih, berotot, dan penuh bekas luka tempur, aura intimidasi ungu kehitaman.',
-                'personality' => 'Dingin, penuh kebencian terhadap dewa, dominan, dan memiliki tawa yang gila/euforik setelah bebas.',
-                'description' => 'Memiliki julukan "Sang Malapetaka" yang menghancurkan dunia. Tengah mencari kebebasan sejati di dunia baru yang penuh konflik.',
-                'status' => 'alive'
-            ],
-            [
-                'novel_id' => $novel->id,
-                'name' => 'Aria Lunareth',
-                'role' => 'Major Characters',
-                'gender' => 'female',
-                'age' => 17,
-                'personality' => 'Memiliki mata hijau zamrud yang indah, tatapan sendu dan lebut, rambut keperakan yang panjang dan anggun, dan kulit porselen yang halus. Dia memiliki kepribadian yang ceria, cerdas, penuh semangat, dan sangat peduli pada orang lain.',
-                'description' => 'Putri mahkota Kerajaan Lurn yang sedang dalam bahaya karena perebutan takhta. Dia memiliki ambisi untuk menyelamatkan kerajaannya dari cengkraman kakak laki-lakinya yang arogan. Memas namun memiliki ikatan yang sangat kuat dengan ksatria pelindungnya Seren yang merupakan teman masa kecilnya.'
-            ],
-            [
-                'novel_id' => $novel->id,
-                'name' => 'Seren Valorian',
-                'role' => 'Major Characters',
-                'gender' => 'female',
-                'age' => 19,
-                'personality' => 'Loyal, tegas, namun memiliki tekad api.',
-                'description' => 'Ksatria kerajaan Lurn yang setia kepada Putri Aria dan berjuang untuk keadilan. Dia memiliki potensi untuk membangkitkan Aetherial Trait yang bisa menjadi kunci untuk menyelamatkan kerajaannya. Dia juga teman masa kecil Aria dan diutus oleh raja sebagai pengawal Putri Ara. Seren memiliki hubungan yang rumit dengan Kaelen, karena dia melihatnya sebagai ancaman.'
-            ],
-        ]);
-
         $kaelen = Character::create([
             'novel_id' => $novel->id,
-            'name' => 'Kaelen Thorne',
-            'role' => 'Antagonist',
+            'fullname' => 'Kaelen',
+            'epithet' => 'Sang Malapetaka',
+            'role' => 'Protagonist',
             'gender' => 'male',
-            'age' => 28,
-            'personality' => 'Manipulatif dan sangat cerdas.',
-            'description' => 'Mantan penyihir istana yang mengkhianati kerajaan demi kekuatan Void.'
+            'height_cm' => 182,
+            'appearance' => 'Rambut hitam panjang berantakan, tatapan tajan dan dingin dengan mata emas (sebelumnya ungu pekat), tubuh terlatih, berotot, dan memiliki beberapa bekas luka tempur, aura intimidasi ungu kehitaman.',
+            'personality' => 'Rasional, dominan, arogan, dan dingin.',
+            'motivation' => 'Mencari Kebebasan dan tidak ingin menjadi bagian dari bidak takdir.',
+            'backstory' => 'Setelah menghancurkan dunianya dan membalaskan dendamnya, ia berakhir tersegel. Dia dibebaskan oleh entitas misterius ke dunia baru.',
         ]);
 
-        // 5. Character Powers
-        CharacterPower::create([
-            'character_id' => $seren->id,
-            'name' => 'Ordinem Vitalis',
-            'category' => 'Aetherial',
-            'type' => 'Resonance Wave',
-            'stance' => 'Defensive',
-            'power_level' => 85,
-            'description' => 'Menciptakan perisai frekuensi yang dapat memantulkan serangan sihir lawan.'
+        $aria = Character::create([
+            'novel_id' => $novel->id,
+            'fullname' => 'Aria Lunareth',
+            'title' => 'Putri Kerajaan Lurn',
+            'role' => 'Deuteragonist',
+            'gender' => 'female',
+            'age' => 17,
+            'height_cm' => 166,
+            'appearance' => 'Memiliki mata hijau zamrud yang indah, tatapan sendu dan lebut, rambut keperakan yang panjang dan lurus, dan kulit porselen yang halus.',
+            'personality' => 'Ceria, cerdas, penuh semangat, dan sangat peduli pada orang lain.',
+            'motivation' => 'Menyelamatkan kerajaannya dari cengkraman kakak laki-lakinya yang arogan.',
+            'backstory' => 'Putri mahkota Kerajaan Lurn yang sedang dalam bahaya karena perebutan takhta. Memiliki ikatan yang sangat kuat dengan ksatria pelindungnya Seren yang merupakan teman masa kecilnya.'
         ]);
 
-        CharacterPower::create([
-            'character_id' => $kaelen->id,
-            'name' => 'Void Echo',
-            'category' => 'Magical',
-            'type' => 'Dark Magic',
-            'stance' => 'Offensive',
-            'power_level' => 92,
-            'description' => 'Menghisap energi kehidupan di sekitar pengguna untuk diubah menjadi ledakan gelap.'
+        $seren = Character::create([
+            'novel_id' => $novel->id,
+            'fullname' => 'Seren Valorian',
+            'title' => 'Kapten Batalion Divisi 3',
+            'role' => 'Deuteragonist',
+            'gender' => 'female',
+            'age' => 19,
+            'height_cm' => 174,
+            'appearance' => 'Memiliki mata berwarna biru langit, tatapan tajam, rambut berwarna emas yang panjang dan bergelombang, dan kulit putih.',
+            'personality' => 'Loyal, tegas, pemberani, dan memiliki tekad berapi-api.',
+            'motivation' => 'Melindungi Putri Aria hingga titik darah penghabisan.',
+            'backstory' => 'Ksatria kerajaan Lurn yang setia kepada Putri Aria dan berjuang untuk keadilan. Dia memiliki potensi untuk membangkitkan Aetherial Trait yang bisa menjadi kunci untuk menyelamatkan kerajaannya. Dia juga teman masa kecil Aria dan diutus oleh raja sebagai pengawal Putri Ara. Seren memiliki hubungan yang rumit dengan Kaelen, karena dia melihatnya sebagai ancaman.'
         ]);
     }
 }

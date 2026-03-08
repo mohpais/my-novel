@@ -81,10 +81,10 @@ function removeCover() {
 <template>
     <div class="space-y-4">
         <!-- PREVIEW -->
-        <div class="preview flex justify-center shadow-theme-md rounded-md overflow-hidden w-full h-[300px]">
+        <div class="preview flex justify-center shadow-theme-md rounded-md overflow-hidden w-full">
             <img
                 :src="previewSrc"
-                class="rounded-md w-full object-cover shadow"
+                class="rounded-md w-full h-full object-cover shadow"
             />
         </div>
 
@@ -134,7 +134,7 @@ function removeCover() {
         <input
             type="file"
             ref="fileInput"
-            accept="image/*"
+            accept="image/png,image/jpeg,image/webp"
             class="hidden"
             @change="onFileSelect"
         />

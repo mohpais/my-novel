@@ -14,17 +14,33 @@ return new class extends Migration
         Schema::create('characters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('novel_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('role')->nullable();
+            $table->string('fullname');
+            $table->string('title')->nullable(); // Untuk Gelar resmi
+            $table->string('epithet')->nullable(); // Julukan/Sebutan khusus
+           
+            // Daftar ini adalah yang paling umum digunakan untuk membedakan porsi kemunculan dan dampak tokoh terhadap alur utama. 
+            // Protagonist: Tokoh utama pusat cerita.
+            // Antagonist: Tokoh yang menentang atau menjadi hambatan utama protagonis.
+            // Deuteragonist: Tokoh terpenting kedua (pendamping utama).
+            // Tritagonist: Tokoh terpenting ketiga (sering kali menjadi penengah atau memiliki sub-plot signifikan).
+            // Supporting: Tokoh pendukung yang muncul secara rutin.
+            // Minor: Tokoh figuran yang hanya muncul sesekali.
+            $table->enum('role', [
+                'Protagonist', 
+                'Antagonist', 
+                'Deuteragonist', 
+                'Tritagonist', 
+                'Supporting', 
+                'Minor'])->nullable();
             $table->enum('gender', ['male', 'female', 'unknown'])->default('male');
             $table->integer('age')->nullable();
             $table->integer('height_cm')->nullable();
             $table->text('appearance')->nullable();
             $table->text('personality')->nullable();
-            $table->text('abilities')->nullable();
-            $table->text('description')->nullable();
-            $table->json('embedding')->nullable();
-            $table->enum('status', ['alive', 'dead', 'unknown'])->default('alive');
+            $table->text('motivation')->nullable();
+            $table->text('backstory')->nullable();
+            $table->string('faction_affiliation')->nullable();
+            $table->enum('status', ['alive', 'dead', 'missing', 'unknown'])->default('alive');
             $table->timestamps();
         });
         // Exp:

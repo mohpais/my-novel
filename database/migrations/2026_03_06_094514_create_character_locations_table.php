@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ai_messages', function (Blueprint $table) {
+        Schema::create('character_locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ai_conversation_id')->constrained()->cascadeOnDelete();
-            $table->enum('role', ['user','assistant','system']);
-            $table->longText('content');
-            $table->json('metadata')->nullable(); // Bagus untuk simpan "source" mana yang dipakai AI untuk jawab
+            $table->foreignId('character_id')->constrained()->onDelete('cascade');
+            $table->foreignId('location_id')->constrained()->onDelete('cascade');
+            $table->string('status')->default('origin'); // e.g., 'birthplace', 'current_residence', 'died_here'
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ai_messages');
+        Schema::dropIfExists('character_locations');
     }
 };

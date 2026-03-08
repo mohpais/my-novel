@@ -34,12 +34,6 @@ return new class extends Migration
             $table->integer('power_level')->nullable();
             $table->timestamps();
         });
-
-        // Contoh:
-
-        // Seren -> Ordinem Vitalis
-        // Seren -> Dormant Ether Seed
-        // Kaelen -> Archeline
     }
     
     /**

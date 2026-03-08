@@ -3,53 +3,64 @@
 namespace App\Services\AI;
 
 use App\Models\AiVector;
+use Illuminate\Database\Eloquent\Model;
 
 class VectorMemoryService
 {
+    protected $embeddingService;
 
-    protected $embedding;
-
-    public function __construct(EmbeddingService $embedding)
+    public function __construct(EmbeddingService $embeddingService)
     {
-        $this->embedding = $embedding;
+        $this->embeddingService = $embeddingService;
     }
 
-    public function store($novelId, $category, $id, $content)
+    /**
+     * Menyimpan atau mengupdate vector berdasarkan Model (Lore, Location, dll)
+     */
+    public function updateMemory(Model $model, string $content, string $tags = null)
     {
-        // Ambil embedding dari service
-        $embedding = $this->embedding->generateEmbedding($content);
+        $vector = $this->embeddingService->generateEmbedding($content);
 
-        return AiVector::create([
-            'novel_id' => $novelId,
-            'source_category' => $category,
-            'source_id' => $id,
-            'content' => $content,
-            'embedding' => $embedding
-        ]);
+        return AiVector::updateOrCreate(
+            [
+                'vectorable_id'   => $model->id,
+                'vectorable_type' => get_class($model),
+            ],
+            [
+                'novel_id'  => $model->novel_id,
+                'content'   => $content,
+                'embedding' => $vector,
+                'tags'      => $tags ?? $model->type ?? null, // Menggunakan kolom tags baru
+            ]
+        );
     }
 
-    public function search($novelId, $query, $limit = 5, $category = null)
+    /**
+     * Mencari konten yang paling relevan berdasarkan query dan novel tertentu.
+     */
+    public function search($novelId, $query, $limit = 5, $type = null)
     {
-        $queryVector = $this->embedding->generateEmbedding($query); //
+        $queryVector = $this->embeddingService->generateEmbedding($query);
         
-        // Ambil data dengan filter awal (Pre-Filtering)
-        // Kita ambil 100 data terbaru agar perhitungan cosine similarity tidak terlalu berat
         $dbQuery = AiVector::where('novel_id', $novelId);
 
-        if ($category) {
-            $dbQuery->where('source_category', $category);
+        // Filter berdasarkan tipe model jika spesifik (misal hanya cari di 'App\Models\Location')
+        if ($type) {
+            $dbQuery->where('vectorable_type', $type);
         }
 
+        // Kita ambil 100 data terbaru sebagai candidate pool
         $vectors = $dbQuery->latest()->take(100)->get();
 
         $scores = [];
         foreach ($vectors as $vector) {
-            // Model casting memastikan $vector->embedding sudah menjadi array
+            // Memastikan embedding di-cast sebagai array di Model AiVector
             $similarity = $this->cosineSimilarity($queryVector, $vector->embedding);
 
             $scores[] = [
                 'content' => $vector->content,
-                'score' => $similarity
+                'type'    => $vector->vectorable_type,
+                'score'   => $similarity
             ];
         }
 
@@ -59,32 +70,14 @@ class VectorMemoryService
 
     private function cosineSimilarity($a, $b)
     {
-        if (count($a) !== count($b)) return 0; // Proteksi dimensi
-
+        if (count($a) !== count($b)) return 0;
         $dot = 0; $normA = 0; $normB = 0;
         foreach ($a as $i => $value) {
             $dot += $a[$i] * $b[$i];
             $normA += $a[$i] * $a[$i];
             $normB += $b[$i] * $b[$i];
         }
-        
         $divider = sqrt($normA) * sqrt($normB);
         return ($divider == 0) ? 0 : ($dot / $divider);
-
-    }
-
-    public function hybridSearch($novelId, $query, $limit = 5)
-    {
-        // 1. Keyword Search (Pencarian tepat)
-        $exactMatches = AiVector::where('novel_id', $novelId)
-            ->where('content', 'LIKE', "%{$query}%")
-            ->take($limit)
-            ->get();
-
-        // 2. Vector Search (Pencarian semantik)
-        $vectorMatches = $this->search($novelId, $query, $limit);
-
-        // Gabungkan dan hapus duplikat
-        return collect($vectorMatches)->merge($exactMatches)->unique('content')->take($limit);
     }
 }

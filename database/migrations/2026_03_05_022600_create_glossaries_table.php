@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ai_messages', function (Blueprint $table) {
+        Schema::create('glossaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ai_conversation_id')->constrained()->cascadeOnDelete();
-            $table->enum('role', ['user','assistant','system']);
-            $table->longText('content');
-            $table->json('metadata')->nullable(); // Bagus untuk simpan "source" mana yang dipakai AI untuk jawab
+            $table->foreignId('novel_id')->constrained()->onDelete('cascade');
+            $table->string('term')->unique();
+            $table->string('pronunciation')->nullable();
+            $table->text('definition');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ai_messages');
+        Schema::dropIfExists('glossaries');
     }
 };

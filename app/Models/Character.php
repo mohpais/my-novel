@@ -22,16 +22,18 @@ class Character extends Model
      */
     protected $fillable = [
         'novel_id',
-        'name',
+        'fullname',
+        'title',
+        'epithet',
         'role',
         'gender',
         'age',
         'height_cm',
         'appearance',
         'personality',
-        'abilities',
-        'description',
-        'embedding',
+        'motivation', // Apa yang diinginkan karakter atau tujuan utamanya
+        'backstory', // Sejarah singkat masa lalu karakter
+        'faction_affiliation', // Organisasi atau kelompok tempat karakter bernaung.
         'status',
     ];
 
@@ -40,7 +42,6 @@ class Character extends Model
      * * @var array<string, string>
      */
     protected $casts = [
-        'embedding' => 'array',
         'age' => 'integer',
         'height_cm' => 'integer',
     ];

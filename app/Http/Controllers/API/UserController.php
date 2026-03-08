@@ -9,7 +9,6 @@ use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Exception;
@@ -50,7 +49,7 @@ class UserController extends Controller
         ]);
 
         // Add role 'user' secara default
-        $createdUser->roles()->attach($request['role']);
+        $user->roles()->attach($request['role']);
 
         return response()->json([
             'success' => true,

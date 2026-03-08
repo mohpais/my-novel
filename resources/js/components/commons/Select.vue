@@ -84,7 +84,7 @@
                     class="px-3 py-2 cursor-pointer hover:bg-brand-500 hover:text-white dark:hover:bg-brand-700 text-gray-800 dark:text-white"
                     :class="{
                         'bg-brand-500 dark:bg-brand-700 text-white': isOptionSelected(option),
-                        'bg-brand-500 dark:bg-brand-700 text-white': index === highlightedIndex, // Highlighted with keyboard
+                        'bg-gray-100 dark:bg-gray-800': index === highlightedIndex && !isOptionSelected(option)
                     }"
                     @click.stop="selectOption(option)"
                     @mouseover="highlightedIndex = index"

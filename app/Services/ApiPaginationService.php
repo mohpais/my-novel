@@ -7,51 +7,43 @@ use Illuminate\Http\Request;
 
 class ApiPaginationService
 {
-    /**
-     * Handle complex query with pagination, filtering, and sorting.
-     */
     public function handle(Builder $query, Request $request, array $relations = [], array $fieldMapping = [])
     {
         try {
+            // Mengambil data yang sudah divalidasi dari FormRequest
             $payload = $request->validated();
 
             if (!empty($relations)) {
                 $query->with($relations);
             }
 
-            // Clone the original query to get total records count
-            $totalRecordsQuery = clone $query;
-            $totalRecords = $totalRecordsQuery->count();
+            // 1. Hitung total records sebelum filter (Total Keseluruhan)
+            $totalRecords = $query->count();
 
-            // Teruskan field mapping ke method filtering
+            // 2. Terapkan Filtering
             $this->applyFilters($query, $payload['filterParams'] ?? [], $fieldMapping);
 
-            // Get the total count after applying searching
+            // 3. Hitung total setelah filter (untuk info pagination)
             $totalFiltered = $query->count();
 
-            // Apply ordering
+            // 4. Terapkan Sorting
             $this->applySorting($query, $payload['sortParams'] ?? [], $fieldMapping);
 
-            // $perPage = $payload['per_page'] ?? 15;
-            // return $query->paginate($perPage);
-
-             // Apply pagination
-            $perPage = $request->input('per_page', $request->route('per_page', 10));
-            $currentPage = $request->input('page', $request->route('page', 1));
-            $totalPages = ceil($totalRecords / $perPage);
+            // 5. Konfigurasi Pagination
+            $perPage = (int) ($payload['per_page'] ?? 10);
+            $currentPage = (int) ($payload['page'] ?? 1);
 
             $paginate = $query->paginate($perPage, ['*'], 'page', $currentPage);
-            $requestedColumns = collect($request->input('columns'))->pluck('data')->toArray();
 
             return [
                 'success' => true,
                 'records' => $paginate->items(),
                 'pagination' => [
                     'current_page'        => $paginate->currentPage(),
-                    'total_records'       => $totalRecords,
+                    'total_records'       => $totalRecords, // Total awal
+                    'total_filtered'      => $totalFiltered, // Total setelah search
                     'total_rows_per_page' => count($paginate->items()),
                     'last_page'           => $paginate->lastPage(),
-                    'total_pages'         => $totalPages,
                 ],
             ];
         } catch (\Throwable $th) {
@@ -59,9 +51,6 @@ class ApiPaginationService
         }
     }
 
-    /**
-     * Apply dynamic filters to the query builder.
-     */
     protected function applyFilters(Builder $query, array $filters, array $fieldMapping)
     {
         foreach ($filters as $filter) {
@@ -69,7 +58,6 @@ class ApiPaginationService
             $operator = $filter['operator'];
             $value    = $filter['value'];
 
-            // Gunakan mapped field jika ada, jika tidak, gunakan field asli
             $dbField = $fieldMapping[$field] ?? $field;
 
             if ($operator === 'like') {
@@ -85,21 +73,18 @@ class ApiPaginationService
         }
     }
 
-    /**
-     * Apply dynamic sorting to the query builder.
-     */
     protected function applySorting(Builder $query, array $sorts, array $fieldMapping)
     {
         if (empty($sorts)) {
+            // Default sorting jika tidak ada parameter
+            $query->orderBy('id', 'desc');
             return;
         }
 
         foreach ($sorts as $sort) {
             $field     = $sort['field'];
             $direction = $sort['direction'] ?? 'asc';
-
-            // Gunakan mapped field jika ada, jika tidak, gunakan field asli
-            $dbField = $fieldMapping[$field] ?? $field;
+            $dbField   = $fieldMapping[$field] ?? $field;
 
             $query->orderBy($dbField, $direction);
         }
