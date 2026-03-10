@@ -85,7 +85,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     });
 
     // --- Management Chapter (Admin/Author) ---
-    Route::prefix('chapters')->group(function () {
+    Route::prefix('chapter')->group(function () {
         Route::post('store', [ChapterController::class, 'store']);
         Route::post('update/{id}', [ChapterController::class, 'update']);
         Route::delete('delete/{id}', [ChapterController::class, 'destroy']);

@@ -1,7 +1,10 @@
 import { reactive } from "vue";
 import service from './service';
 import { defineStore } from 'pinia';
+import { useNovelStore } from "@/modules/novel/store";
 import listNovelsColumnDefs from "./useColumnDefsTable";
+import { queueToastAfterLayout, flushToastQueue } from '@/composables/useToastAfterLayout'
+import { useRouter } from "vue-router";
 
 export const useChapterStore = defineStore('chapter', () => {
     const data = reactive({
@@ -14,6 +17,7 @@ export const useChapterStore = defineStore('chapter', () => {
         content: "",
     });
 
+    var router = useRouter();
 
     const isLoading = reactive({
         createChapter: false,
@@ -34,25 +38,29 @@ export const useChapterStore = defineStore('chapter', () => {
     });
 
     async function btnCreateChapter({ values }) {
-        console.log(values);
-        
-        // if (values) {
-        //     isLoading.createNovel = true;
-        //     try {
-        //         const result = await service.create(form);
-        //         let { success, message, data: responseData } = result;
+        if (values) {
+            isLoading.createChapter = true;
+            try {
+                const novelStore = useNovelStore();
+                form.novel_id = novelStore.data.novel?.id;
+                if (!form.novel_id) {
+                    throw new Error("Novel ID tidak ditemukan");
+                }
 
-        //         if (success) {
-        //             queueToastAfterLayout(message, { type: 'success' });
-        //             router.push({ name: 'RequestListPage' });
-        //         }
-        //     } catch (error) {
-        //         console.error("❌ Error saat memuat count data:", error);
-        //         flushToastQueue(error, { type: 'error' });
-        //     } finally {
-        //         isLoading.createNovel = false;
-        //     }
-        // }
+                const result = await service.create(form);
+                let { success, message, data: responseData } = result;
+
+                if (success) {
+                    queueToastAfterLayout(message, { type: 'success' });
+                    router.push({ name: 'NovelDetailPage', params: { slug: novelStore.data.novel?.slug } });
+                }
+            } catch (error) {
+                console.error("❌ Error saat memuat count data:", error);
+                flushToastQueue(error, { type: 'error' });
+            } finally {
+                isLoading.createNovel = false;
+            }
+        }
     }
 
     return {

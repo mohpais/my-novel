@@ -14,7 +14,7 @@ const chapterService = {
         return response.data;
     },
     create: async (payload) => {
-        let response = await apiService.post(`/novel/chapter/store`, payload);
+        let response = await apiService.post(`/chapter/store`, payload);
         return response.data;
     },
 }

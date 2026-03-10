@@ -12,13 +12,12 @@
             </div>
 
             <!-- Title -->
-            <h4
+            <h3
                 v-else
-                class="mb-2 text-base font-semibold text-gray-800 dark:text-white/90"
+                class="mb-0 text-base font-semibold text-gray-800 dark:text-white/90"
             >
                 {{ novel?.title }}
-            </h4>
-            <span></span>
+            </h3>
         </div>
 
         <!-- BODY -->
