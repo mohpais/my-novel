@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique()->nullable();
             $table->text('synopsis')->nullable();
+            $table->enum('languages', ['en', 'id'])->nullable();
             $table->string('cover_image')->nullable();
             $table->enum('status', ['draft', 'ongoing', 'completed','hiatus'])->default('draft');
             $table->unsignedBigInteger('total_views')->default(0);

@@ -2,6 +2,7 @@ import authRoutes from '../modules/auth/routes';
 import dashboardRoutes from '../modules/dashboard/routes';
 import userRoutes from '../modules/user/routes';
 import novelRoutes from '../modules/novel/routes';
+import chapterRoutes from '../modules/chapter/routes';
 
 export default [
     {
@@ -18,4 +19,5 @@ export default [
     ...dashboardRoutes,
     ...userRoutes,
     ...novelRoutes,
+    ...chapterRoutes,
 ];

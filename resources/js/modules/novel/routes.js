@@ -23,6 +23,11 @@ const novelRoutes = [
                 name: 'NovelCreatePage',
                 path: 'create',
                 component: () => import('@/modules/novel/pages/CreatePage.vue'),
+            },
+            {
+                name: 'ChapterCreatePage',
+                path: 'detail/:slug/new-chapter',
+                component: () => import('@/modules/chapter/pages/CreatePage.vue'),
             }
         ]
     }

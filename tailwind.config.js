@@ -353,14 +353,6 @@ export default {
                 'slider-navigation': '0px 1px 2px 0px rgba(16, 24, 40, 0.1), 0px 1px 3px 0px rgba(16, 24, 40, 0.1)',
                 'tooltip': '0px 4px 6px -2px rgba(16, 24, 40, 0.05), -8px 0px 20px 8px rgba(16, 24, 40, 0.05)',
             },
-            keyframes: {
-                pulse: {
-                    '50%': { opacity: '0.5' }, // cuma opacity
-                },
-            },
-            animation: {
-                pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
         },
     },
     plugins: [],

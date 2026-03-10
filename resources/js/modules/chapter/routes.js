@@ -15,15 +15,10 @@ const chapterRoutes = [
                 component: () => import('@/modules/chapter/pages/ListPage.vue'),
             },
             // {
-            //     name: 'ChapterDetailPage',
-            //     path: 'detail/:slug',
-            //     component: () => import('@/modules/chapter/pages/DetailPage.vue'),
-            // },
-            {
-                name: 'ChapterCreatePage',
-                path: 'create',
-                component: () => import('@/modules/chapter/pages/CreatePage.vue'),
-            }
+            //     name: 'ChapterCreatePage',
+            //     path: 'create',
+            //     component: () => import('@/modules/chapter/pages/CreatePage.vue'),
+            // }
         ]
     }
 ];

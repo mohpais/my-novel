@@ -2,7 +2,6 @@ import { reactive } from "vue";
 import service from './service';
 import { defineStore } from 'pinia';
 import listNovelsColumnDefs from "./useColumnDefsTable";
-import { useRouter } from "vue-router";
 
 export const useChapterStore = defineStore('chapter', () => {
     const data = reactive({
@@ -10,19 +9,14 @@ export const useChapterStore = defineStore('chapter', () => {
     });
 
     const form = reactive({
-        cover_image: null,
+        number: 0,
         title: "",
-        synopsis: "",
-        genre_ids: [],
-        tag_ids: []
+        content: "",
     });
 
-    const router = useRouter();
 
     const isLoading = reactive({
-        createNovel: false,
-        fetchListNovels: false,
-        fetchNovel: false,
+        createChapter: false,
     });
 
     const dataTable = reactive({
@@ -39,49 +33,7 @@ export const useChapterStore = defineStore('chapter', () => {
         data: [],
     });
 
-    const showModal = reactive({
-        approve: false,
-        reject: false,
-        cancel: false,
-        selectedItem: null,
-        payload: {},
-    })
-
-    async function fetchListNovels() {
-        isLoading.fetchListNovels = true;
-
-        const result = await service.getList(
-            dataTable.paginationConfig.currentPage, dataTable.paginationConfig.pageSize,
-            {
-                filterParams: dataTable.filterParams,
-                sortParams: dataTable.sortParams,
-            }
-        );
-
-        let { success, records, pagination } = result;
-
-        if (success) {
-            dataTable.data = records;
-            dataTable.paginationConfig.currentPage = pagination.current_page;
-            dataTable.paginationConfig.totalPages = pagination.total_pages;
-            dataTable.paginationConfig.totalRecord = pagination.total_records;
-        }
-        isLoading.fetchListRequests = false;
-    }
-
-    async function fetchNovel(novel_id) {
-        isLoading.fetchNovel = true;
-        const result = await service.get(novel_id);
-
-        let { success, data: novels } = result;
-
-        if (success) {
-            data.novels = novels;
-        }
-        isLoading.fetchNovel = false;
-    }
-
-    async function btnCreateNovel({ values }) {
+    async function btnCreateChapter({ values }) {
         console.log(values);
         
         // if (values) {
@@ -108,9 +60,6 @@ export const useChapterStore = defineStore('chapter', () => {
         dataTable,
         form,
         isLoading,
-        showModal,
-        fetchListNovels,
-        fetchNovel,
-        btnCreateNovel,
+        btnCreateChapter,
     }
 });

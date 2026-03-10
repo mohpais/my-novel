@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AiAssistantController;
 use App\Http\Controllers\API\ChapterController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GenreController;
+use App\Http\Controllers\API\TagController;
 use App\Http\Controllers\API\MasterController;
 use App\Http\Controllers\API\NovelController;
 use App\Http\Controllers\API\UserController;
@@ -113,6 +114,14 @@ Route::middleware(['jwt.auth'])->group(function () {
             Route::get('options', [GenreController::class, 'options']);
             Route::get('{slug}', [GenreController::class, 'show']);
             Route::post('create', [GenreController::class, 'store']);
+        });
+
+        // Tag Management
+        Route::prefix('tag')->group(function () {
+            Route::get('list/{page}/{limit}', [TagController::class, 'index']);
+            Route::get('options', [TagController::class, 'options']);
+            Route::get('{slug}', [TagController::class, 'show']);
+            Route::post('create', [TagController::class, 'store']);
         });
 
         // AI Assistant

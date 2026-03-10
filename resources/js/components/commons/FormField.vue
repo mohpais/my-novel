@@ -59,14 +59,18 @@
     const Textarea = defineAsyncComponent(() => import("./Textarea.vue"));
     const RadioButton = defineAsyncComponent(() => import("./RadioButton.vue"));
     const Select = defineAsyncComponent(() => import("./Select.vue"));
-    const Datepicker = defineAsyncComponent(() => import("./Datepicker.vue")); // Import Datepicker.vue
+    const Datepicker = defineAsyncComponent(() => import("./Datepicker.vue"));
+    const HtmlEditor = defineAsyncComponent(() => import("./HtmlEditor.vue"));
 
     const props = defineProps({
         // Tipe komponen yang akan dirender (input, radio, checkbox, select, textarea, custom)
         as: {
             type: String,
             default: 'input',
-            validator: (value) => ['input', 'radio', 'checkbox', 'select', 'textarea', 'custom', 'datepicker'].includes(value)
+            validator: (value) => [
+                'input', 'radio', 'checkbox', 'select', 
+                'textarea', 'custom', 'datepicker', 'htmleditor'
+            ].includes(value)
         },
         // Nama field, penting untuk VeeValidate
         name: {
@@ -233,6 +237,8 @@
                 return Datepicker;
             case 'textarea': // Jika Anda punya komponen Textarea
                 return Textarea;
+            case 'htmleditor': 
+                return HtmlEditor;
             case 'input':
             default:
                 return Input;
@@ -292,6 +298,14 @@
                     placeholder: props.placeholder,
                     isNumber: props.isNumber,
                     type: type.value,
+                };
+            case 'htmleditor':
+                return {
+                    ...commonProps,
+                    label: props.labelName, // Menggunakan labelName dari FormField
+                    placeholder: props.placeholder,
+                    hasError: !!errorMessage.value,
+                    // height: props.height, // Jika Anda ingin menambahkan prop height di FormField nantinya
                 };
             default:
                 return {

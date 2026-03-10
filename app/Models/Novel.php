@@ -15,6 +15,7 @@ class Novel extends Model
         'slug',
         'cover_image',
         'synopsis',
+        'languages',
         'status',
         'total_views',
         'published_at',

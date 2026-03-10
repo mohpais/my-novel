@@ -133,8 +133,7 @@ class ChapterController extends Controller
             'novel_id' => 'required|exists:novels,id',
             'title'    => 'required|string|max:255',
             'number'   => 'required|integer',
-            'content'  => 'required|string',
-            'order'    => 'nullable|integer',
+            'content'  => 'required|string'
         ]);
 
         try {

@@ -14,6 +14,7 @@ export const useNovelStore = defineStore('novel', () => {
         cover_image: null,
         title: "",
         synopsis: "",
+        languages: "",
         genre_ids: [],
         tag_ids: []
     });
@@ -81,6 +82,7 @@ export const useNovelStore = defineStore('novel', () => {
             form.cover_image = novel.cover_image;
             form.title = novel.title;
             form.synopsis = novel.synopsis;
+            form.languages = novel.languages;
             form.genre_ids = novel.genres.map(genre => genre.id);
             form.tag_ids = novel.tags.map(tag => tag.id);
         }

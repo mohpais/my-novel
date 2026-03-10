@@ -63,7 +63,10 @@
                     </svg>
                 </div>
                 <p class="text-gray-500 text-sm">Tidak ada bab yang ditemukan.</p>
-                <Button size="xs" class="mt-2">Tambah Chapter Baru</Button>
+                <Button @click="$router.push({
+                    name: 'ChapterCreatePage',
+                    params: { slug: $route.params.slug }
+                })" size="xs" class="mt-2">Tambah Chapter Baru</Button>
             </div>
         </template>
     </div>
