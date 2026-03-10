@@ -41,7 +41,7 @@ export const useMenuStore = defineStore("menu", () => {
                     },
                     {
                         icon: markRaw(FormsIcon),
-                        name: "Novel List",
+                        name: "My Novel",
                         path: "/novel/list",
                         show: _handleShowMenu(),
                     },

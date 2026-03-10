@@ -355,7 +355,7 @@ export default {
             },
             keyframes: {
                 pulse: {
-                '50%': { opacity: '0.5' }, // cuma opacity
+                    '50%': { opacity: '0.5' }, // cuma opacity
                 },
             },
             animation: {

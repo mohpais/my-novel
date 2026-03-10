@@ -41,7 +41,7 @@ Proyek ini dibangun dengan **Laravel 11 (API)** & **Vue 3 + Vite (SPA frontend)*
 
 ---
 
-## 🛰️ API Documentation
+<!-- ## 🛰️ API Documentation
 
 Semua request API harus menyertakan header `Accept: application/json`. Untuk endpoint yang terproteksi, tambahkan header `Authorization: Bearer <your_token>`.
 
@@ -75,7 +75,7 @@ Semua request API harus menyertakan header `Accept: application/json`. Untuk end
 | `GET` | `/api/stats/summary` | Total views, total words, & active novels |
 | `GET` | `/api/reports/monthly` | Laporan produktivitas bulanan |
 
----
+--- -->
 
 ## 🖥️ Instalasi
 
@@ -140,8 +140,8 @@ Frontend akan berjalan di: [http://localhost:5173](http://localhost:5173)
 ## 🔑 Default Admin
 
 Saat pertama kali migrate & seed:
-- Email: `admin@mynovel.local`
-- Password: `password`
+- Email: `mohamad.pais30@gmail.com`
+- Password: `Admin123!`
 
 _Segera ubah password setelah login pertama._
 
@@ -179,6 +179,67 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
+## 🧠 AI Embedding & Automation (Vector Search)
+
+Sistem ini dilengkapi dengan integrasi AI yang secara otomatis menghasilkan vektor embedding setiap kali ada perubahan data pada elemen cerita. Ini memungkinkan asisten AI memahami konteks novel Anda secara mendalam.
+
+### 🔄 Observers & AI Jobs
+Sistem menggunakan **Laravel Observers** untuk memantau perubahan model berikut:
+- **Chapter**: Mengambil konten bab untuk referensi alur cerita.
+- **Character**: Melacak profil, peran, dan latar belakang karakter.
+- **CharacterPower**: Mendokumentasikan sistem kekuatan dan level karakter.
+- **Location**: Memetakan geografi dan iklim dunia novel.
+- **LoreEntry**: Mengarsipkan sejarah dan hukum dunia (*worldbuilding*).
+
+Setiap kali data di atas di-`save` atau di-`update`, sistem akan memicu `ProcessAiEmbedding` yang dikirim ke antrean (*queue*) untuk diproses oleh AI.
+
+---
+
+## 🛠️ Panduan Operasional (Queue & Deployment)
+
+Karena proses AI Embedding memakan waktu dan bergantung pada API eksternal, proses ini dijalankan di background.
+
+### 💻 Menjalankan di Local (Development)
+1. **Pastikan Driver Queue diset ke database** di file `.env`:
+   ```env
+   QUEUE_CONNECTION=database
+   ```
+   
+2. **Jalankan Worker** di terminal terpisah agar proses embedding berjalan otomatis:
+   ```bash
+   php artisan queue:work
+   ```
+   Tanpa perintah ini, data novel Anda tidak akan ter-embed ke dalam database AI.
+---
+
+## 🚀 Menjalankan di Production
+Di lingkungan produksi, Anda tidak bisa sekadar menjalankan queue:work di terminal karena prosesnya akan mati jika terminal ditutup.
+
+1. **Gunakan Supervisor**: Instal dan konfigurasi Supervisor di server Linux Anda untuk memastikan php artisan queue:work berjalan terus-menerus (restart otomatis jika crash).
+
+2. **Optimasi Cache**
+    ```bash
+    php artisan config:cache
+    php artisan route:cache
+    php artisan view:cache
+   ```
+
+3. **Restart Worker setelah Update**: Setiap kali Anda melakukan git pull atau perubahan kode pada Production, wajib restart worker:
+    ```bash
+    php artisan queue:restart
+   ```
+---
+
+## 🔧 Pemeliharaan Database AI
+Jika Anda menghapus data (Novel/Chapter/Character), Observer akan otomatis menghapus vektor terkait di tabel ai_vectors menggunakan Polymorphic Delete.
+
+Jika Anda ingin melakukan re-embedding massal untuk data lama:
+
+```bash
+# Gunakan Tinker untuk memicu ulang observer pada semua data
+php artisan tinker
+>>> \App\Models\Chapter::all()->each->save();
+```
 ---
 
 ## 👨‍💻 Kontribusi

@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <Breadcrumb pageTitle="My Novel List" />
+        <Breadcrumb pageTitle="My Novel" />
 
         <TableCard :withHeader="true" title="List of Novels" description="Track your novel's progress to boost your sales.">
             <template #actions>

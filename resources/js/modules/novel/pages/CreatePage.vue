@@ -1,4 +1,5 @@
 <template>
+    <Breadcrumb pageTitle="Create Novel" :withBackButton="true" />
     <FormLayout />
 </template>
 

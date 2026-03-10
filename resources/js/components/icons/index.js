@@ -1,3 +1,4 @@
+import AnalyticsIcon from "./AnalyticsIcon.vue";
 import BoxCubeIcon from "./BoxCubeIcon.vue";
 import BookIcon from "./BookIcon.vue";
 import BuildingFillDown from "./BuildingFillDown.vue";
@@ -36,6 +37,7 @@ import Calendar2Line from "./Calendar2Line.vue";
 import Message2Line from "./Message2Line.vue";
 import PaperclipIcon from "./PaperclipIcon.vue";
 import MenuIcon from "./MenuIcon.vue";
+import NotesIcon from "./NotesIcon.vue";
 import CheckIcon from "./CheckIcon.vue";
 import MailBox from "./MailBox.vue";
 import SendIcon from "./SendIcon.vue";
@@ -52,10 +54,12 @@ import BellIcon from "./BellIcon.vue";
 import BarChartIcon from "./BarChartIcon.vue";
 
 export {
+  AnalyticsIcon,
   BellIcon,
   BookIcon,
   BuildingFillDown,
   BuildingAdd,
+  NotesIcon,
   BarChartIcon,
   LayoutDashboardIcon,
   UserGroupIcon,

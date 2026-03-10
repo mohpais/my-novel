@@ -1,13 +1,13 @@
 import { reactive } from "vue";
 import service from './service';
 import { defineStore } from 'pinia';
-import { queueToastAfterLayout, flushToastQueue } from '@/composables/useToastAfterLayout'
 import listNovelsColumnDefs from "./useColumnDefsTable";
-import { useRouter } from "vue-router";
 
 export const useNovelStore = defineStore('novel', () => {
     const data = reactive({
         novels: [],
+        novel: null,
+        chapters: []
     });
 
     const form = reactive({
@@ -18,12 +18,11 @@ export const useNovelStore = defineStore('novel', () => {
         tag_ids: []
     });
 
-    const router = useRouter();
-
     const isLoading = reactive({
         createNovel: false,
         fetchListNovels: false,
         fetchNovel: false,
+        fetchChapters: false,
     });
 
     const dataTable = reactive({
@@ -75,12 +74,37 @@ export const useNovelStore = defineStore('novel', () => {
         isLoading.fetchNovel = true;
         const result = await service.get(novel_slug);
 
-        let { success, data: novels } = result;
+        let { success, data: novel } = result;
 
         if (success) {
-            data.novels = novels;
+            data.novel = novel;
+            form.cover_image = novel.cover_image;
+            form.title = novel.title;
+            form.synopsis = novel.synopsis;
+            form.genre_ids = novel.genres.map(genre => genre.id);
+            form.tag_ids = novel.tags.map(tag => tag.id);
         }
         isLoading.fetchNovel = false;
+    }
+
+    async function fetchChapters(novel_slug) {
+        isLoading.fetchChapters = true;
+        try {
+            // Kita panggil service dengan slug
+            // Jika API butuh body (seperti pagination), kirimkan object di parameter kedua
+            const result = await service.getChapters(novel_slug, {
+                // contoh payload jika dibutuhkan:
+                // page: 1, limit: 100 
+            });
+
+            if (result.success) {
+                data.chapters = result.records || result.data; 
+            }
+        } catch (error) {
+            console.error("Error fetching chapters:", error);
+        } finally {
+            isLoading.fetchChapters = false;
+        }
     }
 
     async function btnCreateNovel({ values }) {
@@ -113,6 +137,7 @@ export const useNovelStore = defineStore('novel', () => {
         showModal,
         fetchListNovels,
         fetchNovel,
+        fetchChapters,
         btnCreateNovel,
     }
 });

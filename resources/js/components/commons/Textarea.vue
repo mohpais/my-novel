@@ -1,17 +1,17 @@
 <template>
     <textarea 
         :placeholder="placeholder"
-        type="text" 
         :id="id"
         :name="name"
         :rows="rows" 
-        v-bind="$attrs"
+        :value="modelValue"  v-bind="$attrs"
         :autocomplete="preventAutocomplete ? 'on' : 'off'"
         @input="handleInput"
         @blur="handleBlur"
         :disabled="disabled"
         :readonly="readonly"
-        class="shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full resize-none rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:ring-gray-700 focus:outline-none dark:bg-gray-800 dark:text-white/90 dark:placeholder:text-white/30"></textarea>
+        class="shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full resize-none rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:ring-gray-700 focus:outline-none dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+    ></textarea>
 </template>
 
 <script setup>
@@ -76,9 +76,16 @@
 
     // ===== Event Handlers =====
     const handleInput = (event) => {
-        let value = event.target.value;
+        const value = event.target.value;
+        
+        // Emit ke parent (untuk v-model standar)
         emit("update:modelValue", value);
         emit("change", value);
+
+        // Jika digunakan di dalam FormField dengan VeeValidate
+        if (props.handleChange) {
+            props.handleChange(event); 
+        }
     };
 
     // Handler untuk event 'blur'
