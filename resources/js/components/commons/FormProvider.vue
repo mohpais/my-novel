@@ -2,31 +2,45 @@
     <Form
         class="w-full"
         :class="className"
-        @submit="handleFormSubmit"
-        @invalid-submit="onInvalidSubmit"
+        @submit="handleSubmitForm"
+        @invalid-submit="handleInvalidSubmit"
         :validation-schema="validationSchema"
-        :initial-values="initialValues"
-        v-slot="{ errors, values, isSubmitting, isValid, resetForm, meta, validate }"
+        :initial-values="safeInitialValues"
+        v-slot="slotProps"
     >
+        <FormWatcher :meta="slotProps.meta" />
+        
         <slot
-            :errors="errors"
-            :values="values"
-            :is-submitting="isSubmitting"
-            :is-valid="isValid"
-            :reset-form="resetForm"
-            :meta="meta"
-            :validate="validate"
             name="touch-form"
+            :errors="slotProps.errors"
+            :values="slotProps.values"
+            :isSubmitting="slotProps.isSubmitting"
+            :isValid="slotProps.isValid"
+            :meta="slotProps.meta"
+            :resetForm="slotProps.resetForm"
+            :validate="slotProps.validate"
         />
         
         <!-- Slot Custom Button -->
-        <slot name="submit-button" :is-submitting="isSubmitting" />
+        <slot
+            name="submit-button"
+            :isSubmitting="slotProps.isSubmitting"
+        />
     </Form>
 </template>
 
 <script setup>
     import { Form } from 'vee-validate';
-    import { watch, provide, ref } from "vue";
+    import {
+        ref,
+        provide,
+        watch,
+        onMounted,
+        onBeforeUnmount,
+        toRaw
+    } from "vue";
+
+    import { onBeforeRouteLeave } from "vue-router"
 
     const props = defineProps({
         className: String,
@@ -40,10 +54,86 @@
         },
         resetForm: { type: Boolean, default: false },
         validationSchema: Object,
+        preventNav: {
+            type: Boolean,
+            default: false
+        },
     });
 
     // const { handleSubmit, resetForm } = useForm();
     const emit = defineEmits(['on-submit', "update:modelValue", "onInvalidSubmit"]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Safe Initial Values
+    |--------------------------------------------------------------------------
+    |
+    | Menghindari reactive reference dari Pinia
+    |
+    */
+    
+    const safeInitialValues = JSON.parse(
+        JSON.stringify(toRaw(props.initialValues || {}))
+    )
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dirty State
+    |--------------------------------------------------------------------------
+    */
+
+    const isDirty = ref(false)
+    const allowLeave = ref(false)
+
+    function updateDirtyState(meta) {
+        isDirty.value = meta.dirty
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Navigation Guard
+    |--------------------------------------------------------------------------
+    */
+
+    onBeforeRouteLeave(() => {
+
+        if (!props.preventNav) return true
+        if (allowLeave.value) return true
+        if (!isDirty.value) return true
+
+        return window.confirm(
+            "Anda memiliki perubahan yang belum disimpan. Yakin ingin meninggalkan halaman?"
+        )
+    })
+
+    /*
+    |--------------------------------------------------------------------------
+    | Browser Close Guard
+    |--------------------------------------------------------------------------
+    */
+
+    function beforeUnload(e) {
+
+        if (!props.preventNav) return
+        if (!isDirty.value) return
+
+        e.preventDefault()
+        e.returnValue = ""
+    }
+
+    onMounted(() => {
+        window.addEventListener("beforeunload", beforeUnload)
+    })
+
+    onBeforeUnmount(() => {
+        window.removeEventListener("beforeunload", beforeUnload)
+    })
+
+    /*
+    |--------------------------------------------------------------------------
+    | Field Registration (scroll to error)
+    |--------------------------------------------------------------------------
+    */
 
     const fieldRefs = ref({}); // simpan semua field berdasarkan name
 
@@ -53,38 +143,95 @@
 
     provide("registerField", registerField);
 
-    /**
-     * Handle ketika formulir disubmit.
-     * Memicu event 'on-submit' dengan nilai formulir dan actions VeeValidate.
-     */
-    function handleFormSubmit(values, actions) {
-        console.log('Form Submitted with values:', values); // Log untuk debugging
+    /*
+    |--------------------------------------------------------------------------
+    | Submit
+    |--------------------------------------------------------------------------
+    */
 
-        emit('on-submit', { values, actions });
+    function handleSubmitForm(values, actions) {
+
+        allowLeave.value = true
+        isDirty.value = false
+
+        emit("on-submit", { values, actions })
     }
 
-    function onInvalidSubmit({ values, errors }) {
-        emit("onInvalidSubmit", { values, errors });
+    /*
+    |--------------------------------------------------------------------------
+    | Invalid Submit
+    |--------------------------------------------------------------------------
+    */
 
-        const firstErrorFieldName = Object.keys(errors)[0];
-        if (!firstErrorFieldName) return;
+    function handleInvalidSubmit({ values, errors }) {
 
-        const el = fieldRefs.value[firstErrorFieldName]?.inputRef;
-        const targetElement = el?.$el || el || document.querySelector(`label[for="${firstErrorFieldName}"]`);
-        
-        if (targetElement) {
-            targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
-            targetElement.focus?.();
+        emit("onInvalidSubmit", { values, errors })
+
+        const firstError = Object.keys(errors)[0]
+        if (!firstError) return
+
+        const el = fieldRefs.value[firstError]?.inputRef
+
+        const target =
+            el?.$el ||
+            el ||
+            document.querySelector(`[name="${firstError}"]`)
+
+        if (target) {
+
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            })
+
+            target.focus?.()
         }
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reset Form Trigger
+    |--------------------------------------------------------------------------
+    */
 
     watch(
         () => props.resetForm,
-        (newValue) => {
-            if (newValue) {
-                resetForm();
-                emit("update:modelValue", false);
-            }
+        (val) => {
+
+            if (!val) return
+
+            isDirty.value = false
+            allowLeave.value = true
+
+            emit("update:modelValue", false)
         }
-    );
+    )
+
+    /*
+    |--------------------------------------------------------------------------
+    | Provide Dirty State (optional)
+    |--------------------------------------------------------------------------
+    */
+
+    provide("formDirty", isDirty)
+
+    /*
+    |--------------------------------------------------------------------------
+    | Internal watcher component
+    |--------------------------------------------------------------------------
+    */
+
+    const FormWatcher = {
+        props: ["meta"],
+        setup(props) {
+
+            watch(
+                () => props.meta?.dirty,
+                val => updateDirtyState(props.meta),
+                { immediate: true }
+            )
+
+            return () => null
+        }
+    }
 </script>

@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Novel;
-use App\Models\Chapter;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Str;
-use App\Services\ApiPaginationService;
 use App\Http\Requests\ApiPaginationRequest;
+
+use App\Models\Chapter;
+use App\Models\Novel;
+
+use App\Services\ApiPaginationService;
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ChapterController extends Controller
 {
@@ -137,6 +142,14 @@ class ChapterController extends Controller
         ]);
 
         try {
+            // 1. Ambil order terakhir dari chapter yang memiliki novel_id yang sama
+            $lastOrder = Chapter::where('novel_id', $validated['novel_id'])
+                ->max('order');
+                
+            // 2. Set order baru: jika tidak ada data (null), mulai dari 1. Jika ada, tambah 1.
+            $validated['order'] = $lastOrder ? $lastOrder + 1 : 1;
+
+            // 3. Simpan data chapter
             // Slug otomatis dibuat di Model (booted method)
             $chapter = Chapter::create($validated);
 
@@ -145,6 +158,33 @@ class ChapterController extends Controller
                 'message' => 'Chapter berhasil ditambahkan',
                 'data'    => $chapter
             ], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => $th->getMessage()], 500);
+        }
+    }
+
+    public function uploadImage(Request $request): JsonResponse
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Batas 2MB
+        ]);
+
+        try {
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                
+                // Simpan ke folder storage/app/public/chapter-images
+                // Nama file dibuat unik secara otomatis
+                $path = $file->store('chapter-images', 'public');
+
+                // Generate URL publik
+                $url = asset('storage/' . $path);
+
+                return response()->json([
+                    'success' => true,
+                    'url' => $url
+                ]);
+            }
         } catch (\Throwable $th) {
             return response()->json(['success' => false, 'message' => $th->getMessage()], 500);
         }
@@ -187,7 +227,30 @@ class ChapterController extends Controller
     }
 
     /**
-     * Hapus chapter.
+     * Endpoint untuk menyusun ulang urutan bab secara manual (misal Drag & Drop).
+     * Request body: { "chapters": [{ "id": 1, "order": 1 }, { "id": 2, "order": 2 }] }
+     */
+    public function manualReorder(Request $request): JsonResponse
+    {
+        $request->validate([
+            'chapters' => 'required|array',
+            'chapters.*.id' => 'required|exists:chapters,id',
+            'chapters.*.order' => 'required|integer',
+        ]);
+
+        try {
+            foreach ($request->chapters as $item) {
+                Chapter::where('id', $item['id'])->update(['order' => $item['order']]);
+            }
+
+            return response()->json(['success' => true, 'message' => 'Urutan bab berhasil diperbarui.']);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => $th->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Hapus chapterdan rapikan ulang urutan.
      */
     public function destroy($id): JsonResponse
     {
@@ -198,13 +261,41 @@ class ChapterController extends Controller
         }
 
         try {
+            $novelId = $chapter->novel_id; // Simpan ID novel sebelum dihapus
+
             $chapter->delete();
+            
+            // Rapikan ulang urutan bab untuk novel ini
+            $this->reorderChapters($novelId);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Chapter berhasil dihapus'
             ]);
         } catch (\Throwable $th) {
             return response()->json(['success' => false, 'message' => $th->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Logika internal untuk merapikan ulang nomor urutan (order) bab.
+     * Memastikan tidak ada nomor yang melompat setelah penghapusan.
+     */
+    private function reorderChapters($novelId): void
+    {
+        // Ambil semua chapter berdasarkan urutan saat ini
+        $chapters = Chapter::where('novel_id', $novelId)
+            ->orderBy('order', 'asc')
+            ->get();
+
+        // Update urutan satu per satu secara berurutan
+        foreach ($chapters as $index => $chapter) {
+            $newOrder = $index + 1;
+            
+            // Hanya update jika order-nya berubah untuk efisiensi database
+            if ($chapter->order !== $newOrder) {
+                $chapter->update(['order' => $newOrder]);
+            }
         }
     }
 }

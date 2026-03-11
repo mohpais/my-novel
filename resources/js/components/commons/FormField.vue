@@ -167,6 +167,14 @@
         yearRange: { type: [String, Number], default: 50 }, // Tahun range untuk datepicker
         // Untuk menandai apakah field sedang dalam status loading (misal untuk select dengan data async)
         isLoading: { type: Boolean, default: false },
+        confirmLeave: {
+            type: Boolean,
+            default: true
+        },
+        // Tambahkan height jika dibutuhkan untuk htmleditor
+        height: { type: String, default: "300px" },
+        uploadUrl: { type: String, default: "/upload-image" },
+        uploadFolder: { type: String, default: "general" }
     });
 
     const { name, as, type, optionsValue, label, rules, modelValue, disabled, readonly, rows, required, isInline, isLoading } = toRefs(props);
@@ -302,7 +310,10 @@
             case 'htmleditor':
                 return {
                     ...commonProps,
+                    uploadUrl: props.uploadUrl,
+                    uploadFolder: props.uploadFolder,
                     label: props.labelName, // Menggunakan labelName dari FormField
+                    height: props.height,
                     placeholder: props.placeholder,
                     hasError: !!errorMessage.value,
                     // height: props.height, // Jika Anda ingin menambahkan prop height di FormField nantinya

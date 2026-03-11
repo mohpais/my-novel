@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AiAssistantController;
 use App\Http\Controllers\API\ChapterController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GenreController;
+use App\Http\Controllers\API\FileUploadController;
 use App\Http\Controllers\API\TagController;
 use App\Http\Controllers\API\MasterController;
 use App\Http\Controllers\API\NovelController;
@@ -59,6 +60,8 @@ Route::prefix('novel')->group(function () {
     // List novel (dengan filter/pagination)
     Route::post('list', [NovelController::class, 'index']);
     
+    Route::get('search', [NovelController::class, 'search']);
+    
     // Detail novel berdasarkan slug
     Route::get('show/{slug}', [NovelController::class, 'show']);
     
@@ -87,13 +90,16 @@ Route::middleware(['jwt.auth'])->group(function () {
     // --- Management Chapter (Admin/Author) ---
     Route::prefix('chapter')->group(function () {
         Route::post('store', [ChapterController::class, 'store']);
+        Route::post('upload-image', [ChapterController::class, 'uploadImage']);
         Route::post('update/{id}', [ChapterController::class, 'update']);
         Route::delete('delete/{id}', [ChapterController::class, 'destroy']);
     });
 
     // --- Admin & Superadmin Only ---
     Route::middleware(['role:admin,superadmin'])->group(function () {
-        
+        Route::post('/upload-image', [FileUploadController::class, 'uploadImage']);    
+        Route::post('/delete-image', [FileUploadController::class, 'deleteImage']);    
+
         // User Management
         Route::prefix('user')->group(function () {
             Route::post('list/{page}/{per_page}', [UserController::class, 'list']);

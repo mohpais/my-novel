@@ -32,7 +32,7 @@
                                 as="htmleditor"
                                 name="content"
                                 id="content"
-                                labelName="Isi Konten"
+                                uploadFolder="chapters"
                                 v-model="form.content"
                                 rules="required"
                                 placeholder="Tuliskan cerita Anda di sini..."
@@ -61,6 +61,7 @@
             </div>
         </template>
     </FormProvider>
+
 </template>
 
 <script setup>

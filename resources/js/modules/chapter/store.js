@@ -10,13 +10,13 @@ export const useChapterStore = defineStore('chapter', () => {
     const data = reactive({
         chapters: [],
     });
-
+    
     const form = reactive({
-        number: 0,
-        title: "",
-        content: "",
+        number: localStorage.getItem('autosave_chapter_number') || 0,
+        title: localStorage.getItem('autosave_chapter_title') || "",
+        content: localStorage.getItem('autosave_chapter_content') || "",
     });
-
+    
     var router = useRouter();
 
     const isLoading = reactive({
@@ -38,6 +38,8 @@ export const useChapterStore = defineStore('chapter', () => {
     });
 
     async function btnCreateChapter({ values }) {
+        // console.log(values);
+        
         if (values) {
             isLoading.createChapter = true;
             try {
@@ -51,8 +53,20 @@ export const useChapterStore = defineStore('chapter', () => {
                 let { success, message, data: responseData } = result;
 
                 if (success) {
+                    // Hapus semua autosave setelah berhasil
+                    ['number', 'title', 'content'].forEach(key => 
+                        localStorage.removeItem(`autosave_chapter_${key}`)
+                    );
+
                     queueToastAfterLayout(message, { type: 'success' });
-                    router.push({ name: 'NovelDetailPage', params: { slug: novelStore.data.novel?.slug } });
+
+                    const slug = novelStore.data.novel?.slug;
+                    router.push({ 
+                        name: 'NovelDetailPage', 
+                        params: { slug: slug },
+                        // Tambahkan ini agar langsung membuka tab Table of Contents
+                        query: { tab: 'contents' } 
+                    });
                 }
             } catch (error) {
                 console.error("❌ Error saat memuat count data:", error);

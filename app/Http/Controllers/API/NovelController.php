@@ -39,7 +39,7 @@ class NovelController extends Controller
             $data = $this->paginationService->handle(
                 $query, 
                 $request, 
-                ['genres'], // Relasi Eager Loading
+                ['genres', 'tags', 'chapters'], // Relasi Eager Loading
                 $fieldMapping
             );
 
@@ -48,6 +48,43 @@ class NovelController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengambil data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Mencari novel menggunakan Full-Text Search pada judul dan sinopsis.
+     * Route: GET /api/novels/search?q=keyword
+     */
+    public function search(Request $request): JsonResponse
+    {
+        $keyword = $request->query('q');
+
+        // Jika keyword kosong, kembalikan hasil kosong atau panggil index()
+        if (empty($keyword)) {
+            return response()->json([
+                'success' => true,
+                'data'    => []
+            ]);
+        }
+
+        try {
+            // Menggunakan MATCH AGAINST untuk performa pencarian yang kencang
+            // Mode 'BOOLEAN MODE' memungkinkan pencarian yang lebih fleksibel
+            $results = Novel::with(['genres'])
+                ->whereRaw("MATCH(title, synopsis) AGAINST(? IN BOOLEAN MODE)", [$keyword])
+                ->limit(10) // Limit untuk keperluan autocomplete/quick search
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'count'   => $results->count(),
+                'data'    => $results
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pencarian gagal: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -185,58 +222,4 @@ class NovelController extends Controller
             return response()->json(['success' => false, 'message' => $th->getMessage()], 500);
         }
     }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'title' => 'required|string|max:255',
-    //         'synopsis' => 'nullable|string',
-    //         'author' => 'required|string|max:255',
-    //         'genre_ids' => 'required|array|exists:genres,id',
-    //         'genre_ids.*' => 'exists:genres,id',
-    //         'tag_ids' => 'nullable|array|exists:tags,id',
-    //         'tag_ids.*' => 'exists:tags,id',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json(['errors' => $validator->errors()], 422);
-    //     }
-
-    //     $novel = Novel::create([
-    //         'title' => $request->title,
-    //         'synopsis' => $request->synopsis
-    //     ]);
-
-    //     // Attach genres and tags
-    //     $novel->genres()->attach($request->genre_ids);
-    //     if ($request->has('tag_ids')) {
-    //         $novel->tags()->attach($request->tag_ids);
-    //     }
-
-    //     // 
-
-    //     // Load relationships for response
-    //     $novel->load('genres', 'tags');
-
-    //     return response()->json($novel, 201);
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(string $id)
-    // {
-    //     //
-    // }
 }

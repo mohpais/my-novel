@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { queueToastAfterLayout } from '@/composables/useToastAfterLayout'
 
 import routeDefinitions from './routes-definitions.js';
+import { inject } from "vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Fixed Asset Management System';
 
@@ -17,6 +18,15 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+    const formDirty = inject("formDirty", null)
+
+    if (formDirty?.value) {
+
+        if (!confirm("Perubahan belum disimpan. Keluar?")) {
+            return next(false)
+        }
+    }
+
     // Jika bukan aset statis, lanjutkan dengan routing Vue seperti biasa.
     const authStore = useAuthStore();
     const { start } = usePageTransition();

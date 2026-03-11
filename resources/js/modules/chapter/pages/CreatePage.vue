@@ -35,6 +35,11 @@
 
         </div>
     </div>
+
+    <div class="col-span-2 mt-8 p-4 bg-gray-100 rounded">
+        <h3 class="text-lg font-semibold mb-2">Data form Saat Ini:</h3>
+        <pre class="whitespace-pre-wrap text-sm p-2 bg-gray-50 rounded">{{ JSON.stringify(form, null, 2) }}</pre>
+    </div> 
 </template>
 
 <script setup>
@@ -42,15 +47,22 @@ import { computed, defineAsyncComponent, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 
+import { useChapterStore } from "../store";
 import { useNovelStore } from "@/modules/novel/store";
 
 const route = useRoute();
-const store = useNovelStore();
 
-const { data, isLoading } = storeToRefs(store);
+const store = useChapterStore();
+const novelStore = useNovelStore();
+
+const { form } = storeToRefs(store);
+const { data, isLoading } = storeToRefs(novelStore);
 
 // novel dari store
 const novel = computed(() => data.value.novel);
+const chapters = computed(() => data.value.chapters);
+
+const { fetchNovel, fetchChapters } = novelStore;
 
 // lazy load form
 const FormLayout = defineAsyncComponent(() =>
@@ -59,8 +71,13 @@ const FormLayout = defineAsyncComponent(() =>
 
 // jika refresh dan store kosong → fetch lagi
 onMounted(async () => {
+    const { slug } = route.params;
+
     if (!data.value.novel) {
-        await store.fetchNovel(route.params.slug);
+        await Promise.all([
+            fetchNovel(slug),
+            fetchChapters(slug)
+        ]);
     }
 });
 </script>
