@@ -101,8 +101,8 @@ class ContextEngine
     {
         $keywords = [
             'siapa', 'apa itu', 'jelaskan', 'dimana', 'lokasi', 
-            'sejarah', 'kekuatan', 'budaya', 'ras', 'karakter',
-            'dunia', 'geografi', 'mitos', 'timeline', 'dia', 'mereka'
+            'sejarah', 'kekuatan', 'Aetherial Trait', 'tier', 'budaya', 'ras', 'karakter', 'character',
+            'dunia', 'world_building', 'geografi', 'mitos', 'timeline', 'dia', 'mereka', 'bab', 'chapter'
         ];
         return Str::contains(strtolower($prompt), $keywords);
     }

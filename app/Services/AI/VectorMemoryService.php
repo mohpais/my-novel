@@ -17,7 +17,7 @@ class VectorMemoryService
     /**
      * Menyimpan atau mengupdate vector berdasarkan Model (Lore, Location, dll)
      */
-    public function updateMemory(Model $model, string $content, string $tags = null)
+    public function updateMemory(Model $model, string $content, string $category, int $chunkIndex = 0)
     {
         $vector = $this->embeddingService->generateEmbedding($content);
 
@@ -25,12 +25,13 @@ class VectorMemoryService
             [
                 'vectorable_id'   => $model->id,
                 'vectorable_type' => get_class($model),
+                'chunk_index'     => $chunkIndex,
             ],
             [
                 'novel_id'  => $model->novel_id,
                 'content'   => $content,
                 'embedding' => $vector,
-                'tags'      => $tags ?? $model->type ?? null, // Menggunakan kolom tags baru
+                'category'  => $category ?? null, // Menggunakan kolom category baru
             ]
         );
     }

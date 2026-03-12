@@ -27,6 +27,8 @@ class AiVector extends Model
         'novel_id',
         'vectorable_id',
         'vectorable_type',
+        'category',
+        'chunk_index',
         'content',
         'embedding',
     ];

@@ -12,18 +12,17 @@ class ChapterObserver
      */
     public function saved(Chapter $chapter)
     {
-        // Mengambil judul novel untuk memberikan konteks yang lebih kuat pada AI
-        $novelTitle = $chapter->novel->title ?? 'Unknown Novel';
+        // Potong konten menjadi beberapa bagian (misal per 2000 karakter)
+        // agar tidak melebihi limit model embedding
+        $chunks = str_split($chapter->content, 2000);
 
-        // Menggabungkan data penting chapter sebagai konteks AI
-        $content = "Novel: {$novelTitle}. " .
-                   "Chapter Number: {$chapter->number}. " .
-                   "Chapter Title: {$chapter->title}. " .
-                   "Content: {$chapter->content}";
-
-        // Kirim ke antrean background untuk pemrosesan embedding
-        // Menggunakan kategori 'chapter' agar mudah difilter nantinya
-        ProcessAiEmbedding::dispatch($chapter, $content, 'chapter');
+        foreach ($chunks as $index => $chunk) {
+            $category = "Chapter " . $chapter->number . " (Bagian " . ($index + 1) . ")";
+            
+            // Kirim setiap potongan ke Job
+            // Kita tambahkan index agar ID vektor unik jika diperlukan
+            ProcessAiEmbedding::dispatch($chapter, $chunk, $category, $index);
+        }
     }
 
     /**

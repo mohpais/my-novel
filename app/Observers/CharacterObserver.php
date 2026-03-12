@@ -25,7 +25,7 @@ class CharacterObserver
     }
 
     public function deleted(Character $character) {
-        \App\Models\AiVector::where('source_category', 'character')
+        \App\Models\AiVector::where('category', 'character')
             ->where('source_id', $character->id)
             ->delete();
     }

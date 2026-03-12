@@ -18,8 +18,10 @@ return new class extends Migration
             // Menghubungkan ke Model manapun (Location, LoreEntry, Character, dll)
             $table->morphs('vectorable');
             
+            $table->integer('chunk_index')->default(0);
+
             // Kita tambahkan 'sub_category' untuk filtering (misal: 'flora', 'religion', 'history')
-            $table->string('tags')->nullable()->index();
+            $table->string('category')->nullable()->index();
 
             $table->longText('content');
             $table->json('embedding');

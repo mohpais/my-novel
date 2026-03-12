@@ -17,24 +17,26 @@ class ProcessAiEmbedding implements ShouldQueue
 
     protected $model;
     protected $content;
-    protected $tags;
+    protected $category;
+    protected $chunkIndex;
 
     public $tries = 3;
     public $backoff = 10;
 
     // Kita passing Model dan Content-nya
-    public function __construct(Model $model, string $content, string $tags = null)
+    public function __construct(Model $model, string $content, string $category, int $chunkIndex = 0)
     {
         $this->model = $model;
         $this->content = $content;
-        $this->tags = $tags;
+        $this->category = $category;
+        $this->chunkIndex = $chunkIndex;
     }
 
     public function handle(VectorMemoryService $vectorService)
     {
         try {
             // Menggunakan metode updateMemory yang sudah kita buat di Service sebelumnya
-            $vectorService->updateMemory($this->model, $this->content, $this->tags);
+            $vectorService->updateMemory($this->model, $this->content, $this->category, $this->chunkIndex);
             
         } catch (\Exception $e) {
             Log::error("Gagal memproses embedding untuk " . get_class($this->model) . " ID {$this->model->id}: " . $e->getMessage());

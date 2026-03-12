@@ -13,13 +13,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('novels', function (Blueprint $table) {
-            // 1. Index pada slug karena sering digunakan di URL (Unique & Fast)
-            // Ini sudah mendukung performa method getByNovel di controller Anda
-            if (!IndexExists('novels', 'novels_slug_unique')) {
-                $table->unique('slug');
-            }
-
-            // 2. Index pada status untuk memfilter novel 'Published' vs 'Draft' secara cepat
             $table->index('status');
         });
 

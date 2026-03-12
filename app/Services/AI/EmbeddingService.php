@@ -40,7 +40,7 @@ class EmbeddingService
             // Melakukan request POST ke server Ollama lokal
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post($this->baseUrl, [
+            ])->timeout(300)->post($this->baseUrl, [
                 "model" => $this->model,
                 "prompt" => $text // Ollama menggunakan key 'prompt'
             ]);
